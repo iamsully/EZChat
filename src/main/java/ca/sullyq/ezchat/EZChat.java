@@ -1,11 +1,15 @@
 package ca.sullyq.ezchat;
 
 import ca.sullyq.ezchat.commands.EZChatCommand;
+import ca.sullyq.ezchat.commands.JoinNewServerCommand;
+import ca.sullyq.ezchat.config.PlayerData;
 import ca.sullyq.ezchat.config.PlayerTagConfig;
+import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.Config;
 import lombok.Getter;
 
@@ -17,6 +21,9 @@ public class EZChat extends JavaPlugin {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     private final Config<PlayerTagConfig> config;
+
+    @Getter
+    private ComponentType<EntityStore, PlayerData> playerDataType;
 
     @Getter
     private static EZChat instance;
@@ -31,12 +38,15 @@ public class EZChat extends JavaPlugin {
     protected void setup() {
         LOGGER.at(Level.INFO).log("[EZ Chat] Setting up...");
 
+        this.playerDataType = getEntityStoreRegistry().registerComponent(PlayerData.class, "PlayerDataComponent", PlayerData.CODEC);
         this.config.save();
+
         // Register commands
         registerCommands();
 
         // Register event listeners
-//        registerListeners();
+        // registerListeners();
+
 
         LOGGER.at(Level.INFO).log("[EZ Chat] Setup complete!");
     }
@@ -46,7 +56,8 @@ public class EZChat extends JavaPlugin {
      */
     private void registerCommands() {
         try {
-            getCommandRegistry().registerCommand(new EZChatCommand(config));
+            getCommandRegistry().registerCommand(new EZChatCommand(config, playerDataType));
+            getCommandRegistry().registerCommand(new JoinNewServerCommand(config, playerDataType));
             LOGGER.at(Level.INFO).log("[EZ Chat] Registered /ec command");
         } catch (Exception e) {
             LOGGER.at(Level.WARNING).withCause(e).log("[EZ Chat] Failed to register commands");

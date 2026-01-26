@@ -6,6 +6,10 @@
 - Default Symbol [TAG]
 - Make the symbol customizable??
 
+- Make Chat Groups
+- Admin group
+- Dev group
+
 #### Config Example
 
 ```
