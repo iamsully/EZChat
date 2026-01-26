@@ -1,0 +1,17 @@
+{
+  "Group": "ca",
+  "Name": "EZChat",
+  "Version": "1.0.0",
+  "Description": "A Hytale Chat Plugin",
+  "Authors": [
+    {
+      "Name": "Sullyq"
+    }
+  ],
+  "Main": "ca.sullyq.ezchat.EZChat",
+  "LoadOrder": "POSTWORLD",
+  "IncludesAssetPack": true,
+  "Dependencies": {
+    "Zoltus:TinyMessage": "*"
+  }
+}

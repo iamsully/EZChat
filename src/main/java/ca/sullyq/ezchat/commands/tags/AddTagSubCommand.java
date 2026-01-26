@@ -1,13 +1,18 @@
-package ca.sullyq.ezchat.commands;
+package ca.sullyq.ezchat.commands.tags;
 
 import ca.sullyq.ezchat.config.PlayerTagConfig;
+import com.hypixel.hytale.common.util.ArrayUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.util.Config;
+import fi.sulku.hytale.TinyMsg;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
+
+import java.util.Arrays;
+import java.util.Locale;
 
 public class AddTagSubCommand extends CommandBase {
 
@@ -21,7 +26,7 @@ public class AddTagSubCommand extends CommandBase {
     public AddTagSubCommand(Config<PlayerTagConfig> config) {
         super("add", "Adds a new tag on the server(config)");
         this.config = config;
-        this.tagName = withRequiredArg("tag", "The new tag to add", ArgTypes.STRING);
+        this.tagName = withRequiredArg("name", "The new tag to add", ArgTypes.STRING);
         this.setPermissionGroup(null);
     }
 
@@ -35,20 +40,30 @@ public class AddTagSubCommand extends CommandBase {
 
         PlayerTagConfig playerTagConfig = config.get();
 
-        String tag = playerTagConfig.getCustomTags()[0];
-
-        if (tag.isEmpty()) return;
-
         String tagArg = tagName.get(commandContext);
 
         if (tagArg.length() > TAG_NAME_LENGTH) {
-            commandContext.sendMessage(Message.raw("This tag is too many characters."));
+            Message tagNameLimit = TinyMsg.parse("<color:red>This tag name is too long</color>");
+            commandContext.sendMessage(tagNameLimit);
+            return;
+        }
+
+        boolean isTagAlreadyCreated = Arrays.stream(playerTagConfig.getCustomTags()).anyMatch(tag -> tag.toLowerCase(Locale.ROOT).contains(tagArg.toLowerCase(Locale.ROOT)));
+
+        if (isTagAlreadyCreated) {
+            Message tagAlreadyCreated = TinyMsg.parse("<color:red>This tag has already been created</color>");
+            commandContext.sendMessage(tagAlreadyCreated);
             return;
         }
 
         String newTag = "[" + tagArg + "]";
+        playerTagConfig.setCustomTags(ArrayUtil.append(playerTagConfig.getCustomTags(), newTag));
 
-        commandContext.sendMessage(Message.raw("First Tag" + tag + "   New Tag: " + newTag));
+        // TODO: Use the completable future and make sure this completes.
+        config.save();
+
+        Message savedMessage = TinyMsg.parse("<color:green> Saved new tag: " + newTag + "</color>");
+        commandContext.sendMessage(savedMessage);
 
     }
 }
