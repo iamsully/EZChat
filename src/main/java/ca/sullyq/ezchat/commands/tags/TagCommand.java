@@ -1,15 +1,14 @@
 package ca.sullyq.ezchat.commands.tags;
 
-import ca.sullyq.ezchat.config.PlayerTagConfig;
+import ca.sullyq.ezchat.config.TagConfig;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
 import com.hypixel.hytale.server.core.util.Config;
-import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class TagCommand extends AbstractCommandCollection {
 
-    private final Config<PlayerTagConfig> config;
+    private final Config<TagConfig> config;
 
-    public TagCommand(Config<PlayerTagConfig> config) {
+    public TagCommand(Config<TagConfig> config) {
         super("tag", "Manages the tags");
         this.config = config;
         this.setPermissionGroup(null);

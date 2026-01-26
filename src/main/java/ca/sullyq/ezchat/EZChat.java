@@ -3,7 +3,7 @@ package ca.sullyq.ezchat;
 import ca.sullyq.ezchat.commands.EZChatCommand;
 import ca.sullyq.ezchat.commands.JoinNewServerCommand;
 import ca.sullyq.ezchat.config.PlayerData;
-import ca.sullyq.ezchat.config.PlayerTagConfig;
+import ca.sullyq.ezchat.config.TagConfig;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.logger.HytaleLogger;
@@ -20,7 +20,7 @@ public class EZChat extends JavaPlugin {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    private final Config<PlayerTagConfig> config;
+    private final Config<TagConfig> config;
 
     @Getter
     private ComponentType<EntityStore, PlayerData> playerDataType;
@@ -31,7 +31,7 @@ public class EZChat extends JavaPlugin {
     public EZChat(@Nonnull JavaPluginInit init) {
         super(init);
         instance = this;
-        this.config = this.withConfig("PlayerTagConfig", PlayerTagConfig.CODEC);
+        this.config = this.withConfig("PlayerTagConfig", TagConfig.CODEC);
     }
 
     @Override

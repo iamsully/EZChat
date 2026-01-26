@@ -1,21 +1,22 @@
 package ca.sullyq.ezchat.commands.tags;
 
-import ca.sullyq.ezchat.config.PlayerTagConfig;
+import ca.sullyq.ezchat.config.TagConfig;
+import ca.sullyq.ezchat.handlers.MessageHandler;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.util.Config;
+import fi.sulku.hytale.TinyMsg;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
+import java.util.Map;
 
 
 public class ListTagSubCommand extends CommandBase {
 
-    private final Config<PlayerTagConfig> config;
+    private final Config<TagConfig> config;
 
-    public ListTagSubCommand(Config<PlayerTagConfig> config) {
+    public ListTagSubCommand(Config<TagConfig> config) {
         super("list", "List all the tags");
         this.config = config;
         this.setPermissionGroup(null);
@@ -29,11 +30,24 @@ public class ListTagSubCommand extends CommandBase {
     @Override
     protected void executeSync(@NonNullDecl CommandContext commandContext) {
 
-        PlayerTagConfig playerTagConfig = config.get();
+        TagConfig tagConfig = config.get();
 
-        String[] tags = playerTagConfig.getCustomTags();
+        Map<String, String> playerTagsMap = tagConfig.getPlayerTags();
 
-        commandContext.sendMessage(Message.raw(Arrays.toString(tags)));
+        if (playerTagsMap.isEmpty()) {
+            MessageHandler.sendErrorMessage(commandContext, "There is no created Tags");
+            return;
+        }
+
+        StringBuilder formattedString = new StringBuilder();
+
+        playerTagsMap.forEach((key, value) -> {
+            formattedString.append("<color:").append(value).append(">").append(key).append("</color>").append(" ");
+        });
+
+        Message message = TinyMsg.parse(formattedString.toString());
+
+        commandContext.sendMessage(message);
 
     }
 }

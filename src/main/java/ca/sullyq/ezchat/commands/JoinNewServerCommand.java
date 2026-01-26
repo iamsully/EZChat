@@ -1,7 +1,7 @@
 package ca.sullyq.ezchat.commands;
 
 import ca.sullyq.ezchat.config.PlayerData;
-import ca.sullyq.ezchat.config.PlayerTagConfig;
+import ca.sullyq.ezchat.config.TagConfig;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -19,13 +19,13 @@ public class JoinNewServerCommand extends AbstractPlayerCommand {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    private final Config<PlayerTagConfig> config;
+    private final Config<TagConfig> config;
     private ComponentType<EntityStore, PlayerData> playerDataType;
 
     private PlayerConfigData configData;
 
 
-    public JoinNewServerCommand(Config<PlayerTagConfig> config, ComponentType<EntityStore, PlayerData> playerDataType) {
+    public JoinNewServerCommand(Config<TagConfig> config, ComponentType<EntityStore, PlayerData> playerDataType) {
         super("join", "Join DarkMatterEconomy Server");
         this.config = config;
         this.playerDataType = playerDataType;
