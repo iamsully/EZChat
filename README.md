@@ -1,4 +1,4 @@
-# EZChat
+# EZChat ( Currently Under Development )
 
 **EZChat** is a lightweight Hytale server plugin that enhances chat by adding customizable prefixes to player usernames.
 
