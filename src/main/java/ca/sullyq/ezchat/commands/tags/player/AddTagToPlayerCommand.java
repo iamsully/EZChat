@@ -1,8 +1,7 @@
 package ca.sullyq.ezchat.commands.tags.player;
 
-import ca.sullyq.ezchat.config.PlayerData;
+import ca.sullyq.ezchat.config.PlayerConfig;
 import ca.sullyq.ezchat.config.TagConfig;
-import ca.sullyq.ezchat.handlers.MessageHandler;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -20,6 +19,8 @@ import com.hypixel.hytale.server.core.util.Config;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
+import java.util.logging.Level;
+
 
 public class AddTagToPlayerCommand extends AbstractTargetPlayerCommand {
 
@@ -28,53 +29,34 @@ public class AddTagToPlayerCommand extends AbstractTargetPlayerCommand {
     private final Config<TagConfig> config;
     private PlayerConfigData configData;
 
-    private final RequiredArg<String> playerArg;
-    private ComponentType<EntityStore, PlayerData> playerDataType;
+    private ComponentType<EntityStore, PlayerConfig> playerDataType;
 
+    private RequiredArg<String> tagArg;
 
-    public AddTagToPlayerCommand(Config<TagConfig> config, ComponentType<EntityStore, PlayerData> playerDataType) {
-        super("add", "Add a tag to a Player");
+    public AddTagToPlayerCommand(Config<TagConfig> config, ComponentType<EntityStore, PlayerConfig> playerDataType) {
+        super("addtag", "Add a tag to a Player");
         this.config = config;
         this.playerDataType = playerDataType;
-
-        playerArg = withRequiredArg("player", "Target Player", ArgTypes.STRING);
+        this.tagArg = withRequiredArg("Tag", "The tag to add to the player", ArgTypes.STRING);
     }
 
-//    @Override
-//    protected void execute(@NonNullDecl CommandContext commandContext, @NonNullDecl Store<EntityStore> store, @NonNullDecl Ref<EntityStore> ref, @NonNullDecl PlayerRef playerRef, @NonNullDecl World world) {
-//
-//        Universe universe = Universe.get();
-//
-//
-//        Player player = store.getComponent(ref, Player.getComponentType());
-//        if (player == null) return;
-//
-//
-//        this.configData = player.getPlayerConfigData();
-//
-//        LOGGER.at(Level.INFO).log("made it here?");
-//
-//        PlayerData playerData = store.ensureAndGetComponent(ref, playerDataType);
-//        playerData.setTag("TestTag");
-//        LOGGER.at(Level.INFO).log("made it here!!");
-//
-//        this.configData.markChanged();
-//
-//        commandContext.sendMessage(Message.raw("Added tag to player save?"));
-//
 
-    /// /        playerRef.referToServer("some ip address", 5520);
-//    }
     @Override
-    protected void execute(@NonNullDecl CommandContext commandContext, @NullableDecl Ref<EntityStore> ref, @NonNullDecl Ref<EntityStore> ref1, @NonNullDecl PlayerRef playerRef, @NonNullDecl World world, @NonNullDecl Store<EntityStore> store) {
+    protected void execute(@NonNullDecl CommandContext commandContext, @NullableDecl Ref<EntityStore> senderRef, @NonNullDecl Ref<EntityStore> targetRef, @NonNullDecl PlayerRef playerRef, @NonNullDecl World world, @NonNullDecl Store<EntityStore> store) {
 
-        if (ref == null) {
-            MessageHandler.sendErrorMessage(commandContext, "There was an error finding this player");
-            return;
-        }
+        LOGGER.at(Level.INFO).log(playerRef.getUsername());
 
-        Player player = store.getComponent(ref, Player.getComponentType());
+        Player player = store.getComponent(targetRef, Player.getComponentType());
         if (player == null) return;
+
+        this.configData = player.getPlayerConfigData();
+
+        String tag = tagArg.get(commandContext);
+
+        PlayerConfig playerConfig = store.ensureAndGetComponent(targetRef, playerDataType);
+        playerConfig.setTag(tag);
+
+        this.configData.markChanged();
 
         this.configData = player.getPlayerConfigData();
 

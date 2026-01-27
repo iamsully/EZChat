@@ -32,12 +32,11 @@ Example:
 
 ```json
 {
-  "PlayerTags": [
-    "[Amazing]",
-    "[Superman]",
-    "[Crazy]",
-    "[NewTag]"
-  ]
+  "PlayerTags": {
+    "[Admin]": "red",
+    "[RandomTag]": "blue",
+    "[HexTag]": "#ff00ff"
+  }
 }
 ```
 

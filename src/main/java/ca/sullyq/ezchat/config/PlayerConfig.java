@@ -11,17 +11,17 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 @Getter
 @Setter
-public class PlayerData implements Component<EntityStore> {
+public class PlayerConfig implements Component<EntityStore> {
 
     private String tag;
 
-    public PlayerData() {
+    public PlayerConfig() {
         this.tag = "";
     }
 
-    public static final BuilderCodec<PlayerData> CODEC = BuilderCodec.builder(
-                    PlayerData.class,
-                    PlayerData::new
+    public static final BuilderCodec<PlayerConfig> CODEC = BuilderCodec.builder(
+                    PlayerConfig.class,
+                    PlayerConfig::new
             )
             .addField(new KeyedCodec<>("Tag", Codec.STRING),
                     (data, value) -> data.tag = value, data -> data.tag)
@@ -30,7 +30,7 @@ public class PlayerData implements Component<EntityStore> {
     @NullableDecl
     @Override
     public Component<EntityStore> clone() {
-        PlayerData copy = new PlayerData();
+        PlayerConfig copy = new PlayerConfig();
         copy.tag = this.tag;
         return copy;
     }
