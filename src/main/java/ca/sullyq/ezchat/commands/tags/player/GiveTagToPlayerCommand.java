@@ -21,7 +21,6 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
 import java.util.logging.Level;
 
-
 public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
@@ -39,7 +38,6 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
         this.playerDataType = playerDataType;
         this.tagArg = withRequiredArg("Tag", "The tag to give the player", ArgTypes.STRING);
     }
-
 
     @Override
     protected void execute(@NonNullDecl CommandContext commandContext, @NullableDecl Ref<EntityStore> senderRef, @NonNullDecl Ref<EntityStore> targetRef, @NonNullDecl PlayerRef playerRef, @NonNullDecl World world, @NonNullDecl Store<EntityStore> store) {
@@ -59,12 +57,10 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
         this.configData.markChanged();
 
         this.configData = player.getPlayerConfigData();
-
     }
 
     @Override
     protected boolean canGeneratePermission() {
         return true;
     }
-
 }

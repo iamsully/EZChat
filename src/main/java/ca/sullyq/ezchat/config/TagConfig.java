@@ -13,7 +13,6 @@ import java.util.Map;
 @Setter
 public class TagConfig {
 
-
     private Map<String, String> playerTags = new HashMap<>();
 
     public TagConfig() {

@@ -66,6 +66,9 @@ Example:
 - Permission-based prefix assignment ❌
 - Chat formatting customization ❌
 - Prefix stacking (e.g. `[Admin][Dev]`) ❌
+- Links ❌
+- Private & Group messaging ❌
+- Custom join/leave messages ❌
 
 ---
 
@@ -76,14 +79,13 @@ Example:
 
 ---
 
-## 📄 License
-
-MIT
-
----
-
 ## 💬 Support
 
 This plugin is actively developed.  
 If you find bugs, have feature requests, or have any questions, please [Join Discord](https://discord.gg/8TbaDcT7jC) and
 reach out
+---
+
+## 📄 License
+
+MIT

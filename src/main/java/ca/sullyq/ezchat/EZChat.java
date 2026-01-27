@@ -28,6 +28,7 @@ public class EZChat extends JavaPlugin {
     @Getter
     private static EZChat instance;
 
+
     public EZChat(@Nonnull JavaPluginInit init) {
         super(init);
         instance = this;
