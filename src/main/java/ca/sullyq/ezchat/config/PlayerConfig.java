@@ -23,8 +23,9 @@ public class PlayerConfig implements Component<EntityStore> {
                     PlayerConfig.class,
                     PlayerConfig::new
             )
-            .addField(new KeyedCodec<>("Tag", Codec.STRING),
+            .append(new KeyedCodec<>("Tag", Codec.STRING),
                     (data, value) -> data.tag = value, data -> data.tag)
+            .add()
             .build();
 
     @NullableDecl
