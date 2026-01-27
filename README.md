@@ -11,6 +11,15 @@
 - Clean and minimal formatting
 - Lightweight & performance-friendly
 
+**This plugin is in active development and currently does not support specific permissions.
+Server Admins must have the OP permission to use these commands. Tags will be customizable in the future, but right now
+default
+to using [Square Brackets]. Changing the [ ] in the config file, will break the plugin.**
+
+**Changing the color of the tag needs to be done through the TagConfig.json in the /mods/ca_ezchat/ folder.
+Doing this through a command and eventually a UI will come very soon.**
+
+
 ---
 
 ## 🧩 Example Chat Format
