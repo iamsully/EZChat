@@ -14,6 +14,7 @@ public class TagCommand extends AbstractCommandCollection {
         this.setPermissionGroup(null);
 
         this.addSubCommand(new AddTagSubCommand(config));
+        this.addSubCommand(new RemoveTagSubCommand(config));
         this.addSubCommand(new ListTagSubCommand(config));
     }
 

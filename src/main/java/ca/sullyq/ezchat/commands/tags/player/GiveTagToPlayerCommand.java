@@ -22,7 +22,7 @@ import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import java.util.logging.Level;
 
 
-public class AddTagToPlayerCommand extends AbstractTargetPlayerCommand {
+public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
@@ -33,11 +33,11 @@ public class AddTagToPlayerCommand extends AbstractTargetPlayerCommand {
 
     private RequiredArg<String> tagArg;
 
-    public AddTagToPlayerCommand(Config<TagConfig> config, ComponentType<EntityStore, PlayerConfig> playerDataType) {
-        super("addtag", "Add a tag to a Player");
+    public GiveTagToPlayerCommand(Config<TagConfig> config, ComponentType<EntityStore, PlayerConfig> playerDataType) {
+        super("give", "Give a tag to a player");
         this.config = config;
         this.playerDataType = playerDataType;
-        this.tagArg = withRequiredArg("Tag", "The tag to add to the player", ArgTypes.STRING);
+        this.tagArg = withRequiredArg("Tag", "The tag to give the player", ArgTypes.STRING);
     }
 
 
@@ -61,4 +61,10 @@ public class AddTagToPlayerCommand extends AbstractTargetPlayerCommand {
         this.configData = player.getPlayerConfigData();
 
     }
+
+    @Override
+    protected boolean canGeneratePermission() {
+        return true;
+    }
+
 }

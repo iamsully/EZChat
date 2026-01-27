@@ -50,7 +50,7 @@ public class AddTagSubCommand extends CommandBase {
             return;
         }
 
-        // TODO: Make the tag customizable too
+        // TODO: Make the tag customizable
         String newTag = "[" + tagArg + "]";
 
         boolean isTagAlreadyCreated = tagConfig.getPlayerTags().containsKey(newTag);

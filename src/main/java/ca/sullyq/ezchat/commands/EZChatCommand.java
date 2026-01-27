@@ -1,7 +1,7 @@
 package ca.sullyq.ezchat.commands;
 
+import ca.sullyq.ezchat.commands.tags.player.GiveTagToPlayerCommand;
 import ca.sullyq.ezchat.commands.tags.TagCommand;
-import ca.sullyq.ezchat.commands.tags.player.PlayerCommand;
 import ca.sullyq.ezchat.config.PlayerConfig;
 import ca.sullyq.ezchat.config.TagConfig;
 import com.hypixel.hytale.component.ComponentType;
@@ -21,11 +21,11 @@ public class EZChatCommand extends AbstractCommandCollection {
         // Add subcommands
         this.addSubCommand(new HelpSubCommand());
         this.addSubCommand(new TagCommand(config));
-        this.addSubCommand(new PlayerCommand(config, playerDataType));
+        this.addSubCommand(new GiveTagToPlayerCommand(config, playerDataType));
     }
 
     @Override
     protected boolean canGeneratePermission() {
-        return true; // No permission required for base command
+        return true;
     }
 }
