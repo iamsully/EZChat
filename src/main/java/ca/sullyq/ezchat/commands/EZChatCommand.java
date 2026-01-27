@@ -21,11 +21,11 @@ public class EZChatCommand extends AbstractCommandCollection {
         // Add subcommands
         this.addSubCommand(new HelpSubCommand());
         this.addSubCommand(new TagCommand(config));
-        this.addSubCommand(new PlayerCommand(config,playerDataType));
+        this.addSubCommand(new PlayerCommand(config, playerDataType));
     }
 
     @Override
     protected boolean canGeneratePermission() {
-        return false; // No permission required for base command
+        return true; // No permission required for base command
     }
 }

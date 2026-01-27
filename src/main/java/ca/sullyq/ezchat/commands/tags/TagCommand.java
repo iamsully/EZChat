@@ -16,4 +16,10 @@ public class TagCommand extends AbstractCommandCollection {
         this.addSubCommand(new AddTagSubCommand(config));
         this.addSubCommand(new ListTagSubCommand(config));
     }
+
+    @Override
+    protected boolean canGeneratePermission() {
+        return true;
+    }
+
 }

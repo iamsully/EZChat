@@ -35,12 +35,6 @@ public class AddTagSubCommand extends CommandBase {
         this.config = config;
         this.tagName = withRequiredArg("name", "The new tag to add", ArgTypes.STRING);
         this.color = withRequiredArg("color", "The color for this tag", ArgTypes.STRING);
-        this.setPermissionGroup(null);
-    }
-
-    @Override
-    protected boolean canGeneratePermission() {
-        return false;
     }
 
     @Override
@@ -87,4 +81,10 @@ public class AddTagSubCommand extends CommandBase {
         commandContext.sendMessage(savedMessage);
 
     }
+
+    @Override
+    protected boolean canGeneratePermission() {
+        return true;
+    }
+
 }

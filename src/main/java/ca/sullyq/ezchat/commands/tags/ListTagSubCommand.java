@@ -23,11 +23,6 @@ public class ListTagSubCommand extends CommandBase {
     }
 
     @Override
-    protected boolean canGeneratePermission() {
-        return false;
-    }
-
-    @Override
     protected void executeSync(@NonNullDecl CommandContext commandContext) {
 
         TagConfig tagConfig = config.get();
@@ -50,4 +45,10 @@ public class ListTagSubCommand extends CommandBase {
         commandContext.sendMessage(message);
 
     }
+
+    @Override
+    protected boolean canGeneratePermission() {
+        return true;
+    }
+
 }

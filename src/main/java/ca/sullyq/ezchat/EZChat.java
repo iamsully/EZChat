@@ -1,7 +1,6 @@
 package ca.sullyq.ezchat;
 
 import ca.sullyq.ezchat.commands.EZChatCommand;
-import ca.sullyq.ezchat.commands.JoinNewServerCommand;
 import ca.sullyq.ezchat.config.PlayerConfig;
 import ca.sullyq.ezchat.config.TagConfig;
 import ca.sullyq.ezchat.events.PlayerChatListener;
@@ -58,7 +57,6 @@ public class EZChat extends JavaPlugin {
     private void registerCommands() {
         try {
             getCommandRegistry().registerCommand(new EZChatCommand(config, playerDataType));
-//            getCommandRegistry().registerCommand(new JoinNewServerCommand(config, playerDataType));
             LOGGER.at(Level.INFO).log("[EZ Chat] Registered /ec command");
         } catch (Exception e) {
             LOGGER.at(Level.WARNING).withCause(e).log("[EZ Chat] Failed to register commands");

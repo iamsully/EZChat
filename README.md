@@ -42,8 +42,8 @@ Example:
 
 ## 🚀 Installation
 
-1. Download or build the EZChat plugin
-2. Place it in your server’s plugin directory
+1. Download the EZChat plugin JAR
+2. Place it in your server’s mods directory
 3. Restart the server
 4. Configure prefixes to your liking
 5. Done 🎉
@@ -52,11 +52,11 @@ Example:
 
 ## 🛠️ Planned Features
 
-- Per-player custom prefixes
-- Color & formatting support
-- Permission-based prefix assignment
-- Chat formatting customization
-- Prefix stacking (e.g. `[Admin][Dev]`)
+- Per-player custom prefixes ✅
+- Color & formatting support ✅
+- Permission-based prefix assignment ❌
+- Chat formatting customization ❌
+- Prefix stacking (e.g. `[Admin][Dev]`) ❌
 
 ---
 

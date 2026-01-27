@@ -10,12 +10,6 @@ import javax.annotation.Nonnull;
 public class HelpSubCommand extends CommandBase {
     public HelpSubCommand() {
         super("help", "Show available commands");
-        this.setPermissionGroup(null);
-    }
-
-    @Override
-    protected boolean canGeneratePermission() {
-        return false;
     }
 
     @Override
@@ -40,4 +34,10 @@ public class HelpSubCommand extends CommandBase {
         context.sendMessage(uiMessage);
         context.sendMessage(footerMessage);
     }
+
+    @Override
+    protected boolean canGeneratePermission() {
+        return true;
+    }
+
 }
