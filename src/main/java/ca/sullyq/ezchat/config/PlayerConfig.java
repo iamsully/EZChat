@@ -1,39 +1,29 @@
 package ca.sullyq.ezchat.config;
 
-import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
-import com.hypixel.hytale.component.Component;
-import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.hypixel.hytale.codec.codecs.map.MapCodec;
 import lombok.Getter;
 import lombok.Setter;
-import org.checkerframework.checker.nullness.compatqual.NullableDecl;
+
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Getter
 @Setter
-public class PlayerConfig implements Component<EntityStore> {
-
-    private String tag;
+public class PlayerConfig {
+    private Map<String, String> playerTags = new HashMap<>();
 
     public PlayerConfig() {
-        this.tag = "";
     }
 
-    public static final BuilderCodec<PlayerConfig> CODEC = BuilderCodec.builder(
-                    PlayerConfig.class,
-                    PlayerConfig::new
-            )
-            .append(new KeyedCodec<>("Tag", Codec.STRING),
-                    (data, value) -> data.tag = value, data -> data.tag)
-            .add()
-            .build();
+    public static final BuilderCodec<PlayerConfig> CODEC =
+            BuilderCodec.<PlayerConfig>builder(PlayerConfig.class, PlayerConfig::new)
 
-    @NullableDecl
-    @Override
-    public Component<EntityStore> clone() {
-        PlayerConfig copy = new PlayerConfig();
-        copy.tag = this.tag;
-        return copy;
-    }
-
+                    .append(new KeyedCodec<>("PlayerTags", new MapCodec<>(BuilderCodec.STRING, HashMap::new, false)),
+                            (data, value) -> data.playerTags = value,
+                            data -> data.playerTags)
+                    .add()
+                    .build();
 }

@@ -28,14 +28,11 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
     private final Config<TagConfig> config;
     private PlayerConfigData configData;
 
-    private ComponentType<EntityStore, PlayerConfig> playerDataType;
-
     private RequiredArg<String> tagArg;
 
-    public GiveTagToPlayerCommand(Config<TagConfig> config, ComponentType<EntityStore, PlayerConfig> playerDataType) {
+    public GiveTagToPlayerCommand(Config<TagConfig> config) {
         super("give", "Give a tag to a player");
         this.config = config;
-        this.playerDataType = playerDataType;
         this.tagArg = withRequiredArg("Tag", "The tag to give the player", ArgTypes.STRING);
     }
 
@@ -50,9 +47,6 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
         this.configData = player.getPlayerConfigData();
 
         String tag = tagArg.get(commandContext);
-
-        PlayerConfig playerConfig = store.ensureAndGetComponent(targetRef, playerDataType);
-        playerConfig.setTag(tag);
 
         this.configData.markChanged();
 

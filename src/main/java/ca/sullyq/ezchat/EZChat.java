@@ -20,10 +20,10 @@ public class EZChat extends JavaPlugin {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    private final Config<TagConfig> config;
+    private final Config<TagConfig> tagConfig;
 
-    @Getter
-    private ComponentType<EntityStore, PlayerConfig> playerDataType;
+//    @Getter
+//    private ComponentType<EntityStore, PlayerConfig> playerDataType;
 
     @Getter
     private static EZChat instance;
@@ -32,15 +32,15 @@ public class EZChat extends JavaPlugin {
     public EZChat(@Nonnull JavaPluginInit init) {
         super(init);
         instance = this;
-        this.config = this.withConfig("PlayerTagConfig", TagConfig.CODEC);
+        this.tagConfig = this.withConfig("TagConfig", TagConfig.CODEC);
     }
 
     @Override
     protected void setup() {
         LOGGER.at(Level.INFO).log("[EZ Chat] Setting up...");
 
-        this.playerDataType = getEntityStoreRegistry().registerComponent(PlayerConfig.class, "PlayerDataComponent", PlayerConfig.CODEC);
-        this.config.save();
+//        this.playerDataType = getEntityStoreRegistry().registerComponent(PlayerConfig.class, "PlayerDataComponent", PlayerConfig.CODEC);
+        this.tagConfig.save();
 
         // Register commands
         registerCommands();
@@ -48,8 +48,7 @@ public class EZChat extends JavaPlugin {
         // Register event listeners
         registerListeners();
 
-
-        LOGGER.at(Level.INFO).log("[EZ Chat] Setup complete!");
+         LOGGER.at(Level.INFO).log("[EZ Chat] Setup complete!");
     }
 
     /**
@@ -57,7 +56,7 @@ public class EZChat extends JavaPlugin {
      */
     private void registerCommands() {
         try {
-            getCommandRegistry().registerCommand(new EZChatCommand(config, playerDataType));
+            getCommandRegistry().registerCommand(new EZChatCommand(tagConfig));
             LOGGER.at(Level.INFO).log("[EZ Chat] Registered /ec command");
         } catch (Exception e) {
             LOGGER.at(Level.WARNING).withCause(e).log("[EZ Chat] Failed to register commands");
