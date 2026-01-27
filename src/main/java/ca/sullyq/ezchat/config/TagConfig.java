@@ -13,7 +13,7 @@ import java.util.Map;
 @Setter
 public class TagConfig {
 
-    private Map<String, String> playerTags = new HashMap<>();
+    private Map<String, String> tags = new HashMap<>();
 
     public TagConfig() {
 //        this.playerTags.put("[Admin]", "#f84848");
@@ -22,9 +22,9 @@ public class TagConfig {
     public static final BuilderCodec<TagConfig> CODEC =
             BuilderCodec.<TagConfig>builder(TagConfig.class, TagConfig::new)
 
-                    .append(new KeyedCodec<>("PlayerTags", new MapCodec<>(BuilderCodec.STRING, HashMap::new, false)),
-                            (data, value) -> data.playerTags = value,
-                            data -> data.playerTags)
+                    .append(new KeyedCodec<>("Tags", new MapCodec<>(BuilderCodec.STRING, HashMap::new, false)),
+                            (data, value) -> data.tags = value,
+                            data -> data.tags)
                     .add()
                     .build();
 

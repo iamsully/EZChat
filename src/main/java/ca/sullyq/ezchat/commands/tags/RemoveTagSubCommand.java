@@ -10,8 +10,6 @@ import com.hypixel.hytale.server.core.util.Config;
 import fi.sulku.hytale.TinyMsg;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
-import java.util.logging.Level;
-
 
 public class RemoveTagSubCommand extends CommandBase {
 
@@ -42,7 +40,7 @@ public class RemoveTagSubCommand extends CommandBase {
         String tagToRemove = "[" + tagArg + "]";
 
 
-        boolean isTagCreated = tagConfig.getPlayerTags().containsKey(tagToRemove);
+        boolean isTagCreated = tagConfig.getTags().containsKey(tagToRemove);
 
         if (!isTagCreated) {
             Message tagAlreadyCreatedMessage = TinyMsg.parse("<color:red>This tag has not yet been created</color>");
@@ -50,7 +48,7 @@ public class RemoveTagSubCommand extends CommandBase {
             return;
         }
 
-        tagConfig.getPlayerTags().remove(tagToRemove);
+        tagConfig.getTags().remove(tagToRemove);
 
         // TODO: Use the completable future and make sure this completes.
         config.save();

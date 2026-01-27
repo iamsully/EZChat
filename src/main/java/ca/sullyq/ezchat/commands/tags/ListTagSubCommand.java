@@ -27,7 +27,7 @@ public class ListTagSubCommand extends CommandBase {
 
         TagConfig tagConfig = config.get();
 
-        Map<String, String> playerTagsMap = tagConfig.getPlayerTags();
+        Map<String, String> playerTagsMap = tagConfig.getTags();
 
         if (playerTagsMap.isEmpty()) {
             MessageHandler.sendErrorMessage(commandContext, "There is no created Tags");

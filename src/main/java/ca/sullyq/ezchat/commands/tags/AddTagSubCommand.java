@@ -2,7 +2,6 @@ package ca.sullyq.ezchat.commands.tags;
 
 import ca.sullyq.ezchat.config.TagConfig;
 import ca.sullyq.ezchat.handlers.MessageHandler;
-import com.hypixel.hytale.common.util.ArrayUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
@@ -13,7 +12,6 @@ import fi.sulku.hytale.TinyMsg;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import java.util.Arrays;
-import java.util.Locale;
 
 public class AddTagSubCommand extends CommandBase {
 
@@ -53,7 +51,7 @@ public class AddTagSubCommand extends CommandBase {
         // TODO: Make the tag customizable
         String newTag = "[" + tagArg + "]";
 
-        boolean isTagAlreadyCreated = tagConfig.getPlayerTags().containsKey(newTag);
+        boolean isTagAlreadyCreated = tagConfig.getTags().containsKey(newTag);
 
         if (isTagAlreadyCreated) {
             Message tagAlreadyCreated = TinyMsg.parse("<color:red>This tag has already been created</color>");
@@ -72,12 +70,12 @@ public class AddTagSubCommand extends CommandBase {
             }
         }
 
-        tagConfig.getPlayerTags().put(newTag, colorArg);
+        tagConfig.getTags().put(newTag, colorArg);
 
         // TODO: Use the completable future and make sure this completes.
         config.save();
 
-        Message savedMessage = TinyMsg.parse("<color:" + colorArg + ">" + " Saved new tag: " + newTag + "</color>");
+        Message savedMessage = TinyMsg.parse("Saved new tag: " + "<color:" + colorArg + ">" + newTag + "</color>");
         commandContext.sendMessage(savedMessage);
 
     }
