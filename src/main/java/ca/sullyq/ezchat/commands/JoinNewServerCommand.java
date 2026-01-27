@@ -33,6 +33,6 @@ public class JoinNewServerCommand extends AbstractPlayerCommand {
 
     @Override
     protected void execute(@NonNullDecl CommandContext commandContext, @NonNullDecl Store<EntityStore> store, @NonNullDecl Ref<EntityStore> ref, @NonNullDecl PlayerRef playerRef, @NonNullDecl World world) {
-        playerRef.referToServer("play.hyclash.com", 5520);
+        //playerRef.referToServer("play.hyclash.com", 5520);
     }
 }
