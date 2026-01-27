@@ -1,13 +1,10 @@
 package ca.sullyq.ezchat.events;
 
-import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 
-import java.util.logging.Level;
-
-public class PlayerChatListener {
+public class PlayerChatEventListener {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 

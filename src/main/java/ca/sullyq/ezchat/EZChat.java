@@ -3,7 +3,7 @@ package ca.sullyq.ezchat;
 import ca.sullyq.ezchat.commands.EZChatCommand;
 import ca.sullyq.ezchat.config.PlayerConfig;
 import ca.sullyq.ezchat.config.TagConfig;
-import ca.sullyq.ezchat.events.PlayerChatListener;
+import ca.sullyq.ezchat.events.PlayerChatEventListener;
 import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
@@ -68,7 +68,7 @@ public class EZChat extends JavaPlugin {
      */
     private void registerListeners() {
         try {
-            this.getEventRegistry().registerGlobal(PlayerChatEvent.class, PlayerChatListener::onPlayerChat);
+            this.getEventRegistry().registerGlobal(PlayerChatEvent.class, PlayerChatEventListener::onPlayerChat);
             LOGGER.at(Level.INFO).log("[EZ Chat] Registered player event listeners");
         } catch (Exception e) {
             LOGGER.at(Level.WARNING).withCause(e).log("[EZ Chat] Failed to register listeners");
