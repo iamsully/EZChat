@@ -58,7 +58,7 @@ public class EZChat extends JavaPlugin {
     private void registerCommands() {
         try {
             getCommandRegistry().registerCommand(new EZChatCommand(config, playerDataType));
-            getCommandRegistry().registerCommand(new JoinNewServerCommand(config, playerDataType));
+//            getCommandRegistry().registerCommand(new JoinNewServerCommand(config, playerDataType));
             LOGGER.at(Level.INFO).log("[EZ Chat] Registered /ec command");
         } catch (Exception e) {
             LOGGER.at(Level.WARNING).withCause(e).log("[EZ Chat] Failed to register commands");
