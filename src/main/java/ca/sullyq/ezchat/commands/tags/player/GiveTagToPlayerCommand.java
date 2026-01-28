@@ -1,17 +1,18 @@
 package ca.sullyq.ezchat.commands.tags.player;
 
+import ca.sullyq.ezchat.EZChat;
 import ca.sullyq.ezchat.config.PlayerConfig;
 import ca.sullyq.ezchat.config.TagConfig;
-import com.hypixel.hytale.component.ComponentType;
+import ca.sullyq.ezchat.handlers.MessageHandler;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.logger.HytaleLogger;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractTargetPlayerCommand;
 import com.hypixel.hytale.server.core.entity.entities.Player;
-import com.hypixel.hytale.server.core.entity.entities.player.data.PlayerConfigData;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -25,32 +26,54 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    private final Config<TagConfig> config;
-    private PlayerConfigData configData;
+    private final Config<TagConfig> tagConfig;
+    private final Config<PlayerConfig> playerConfig = EZChat.getInstance().getPlayerConfig();
 
-    private RequiredArg<String> tagArg;
+    private final RequiredArg<String> tagArg;
 
     public GiveTagToPlayerCommand(Config<TagConfig> config) {
         super("give", "Give a tag to a player");
-        this.config = config;
+        this.tagConfig = config;
         this.tagArg = withRequiredArg("Tag", "The tag to give the player", ArgTypes.STRING);
     }
 
     @Override
     protected void execute(@NonNullDecl CommandContext commandContext, @NullableDecl Ref<EntityStore> senderRef, @NonNullDecl Ref<EntityStore> targetRef, @NonNullDecl PlayerRef playerRef, @NonNullDecl World world, @NonNullDecl Store<EntityStore> store) {
 
+        if (playerConfig == null) {
+            MessageHandler.sendErrorMessage(commandContext, "Couldn't find the PlayerConfig");
+            return;
+        }
+
+        // TODO: Implement the --overwrite flag
+        if (playerConfig.get().getPlayerTags().containsKey(playerRef.getUuid().toString())) {
+            MessageHandler.sendWarningMessage(commandContext, "This player has a tag already, please use the --overwrite flag to overwrite their tag");
+        }
+
         LOGGER.at(Level.INFO).log(playerRef.getUsername());
 
+        // TODO: I don't think i need this
         Player player = store.getComponent(targetRef, Player.getComponentType());
         if (player == null) return;
 
-        this.configData = player.getPlayerConfigData();
-
         String tag = tagArg.get(commandContext);
 
-        this.configData.markChanged();
+        // TODO: This is silly.. i know.
+        String tagToGive = "[" + tag + "]";
 
-        this.configData = player.getPlayerConfigData();
+        boolean isTagCreated = tagConfig.get().getTags().containsKey(tagToGive);
+
+        if (!isTagCreated) {
+            MessageHandler.sendErrorMessage(commandContext, "Tag not found");
+            return;
+        }
+
+        playerConfig.get().getPlayerTags().put(playerRef.getUuid().toString(), tagToGive);
+
+        playerConfig.save();
+
+        MessageHandler.sendSuccessMessage(commandContext, "Successfully gave " + playerRef.getUsername() + " the tag " + tagToGive);
+
     }
 
     @Override

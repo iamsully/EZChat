@@ -4,23 +4,25 @@ import ca.sullyq.ezchat.commands.EZChatCommand;
 import ca.sullyq.ezchat.config.PlayerConfig;
 import ca.sullyq.ezchat.config.TagConfig;
 import ca.sullyq.ezchat.events.PlayerChatEventListener;
-import com.hypixel.hytale.component.ComponentType;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
-import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.Config;
 import lombok.Getter;
 
 import javax.annotation.Nonnull;
 import java.util.logging.Level;
 
+@Getter
 public class EZChat extends JavaPlugin {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
+
     private final Config<TagConfig> tagConfig;
+
+    private final Config<PlayerConfig> playerConfig;
 
     @Getter
     private static EZChat instance;
@@ -30,6 +32,7 @@ public class EZChat extends JavaPlugin {
         super(init);
         instance = this;
         this.tagConfig = this.withConfig("TagConfig", TagConfig.CODEC);
+        this.playerConfig = this.withConfig("PlayerTagConfig", PlayerConfig.CODEC);
     }
 
     @Override
@@ -38,6 +41,7 @@ public class EZChat extends JavaPlugin {
 
 
         this.tagConfig.save();
+        this.playerConfig.save();
 
         // Register commands
         registerCommands();
@@ -45,7 +49,7 @@ public class EZChat extends JavaPlugin {
         // Register event listeners
         registerListeners();
 
-         LOGGER.at(Level.INFO).log("[EZ Chat] Setup complete!");
+        LOGGER.at(Level.INFO).log("[EZ Chat] Setup complete!");
     }
 
     /**
