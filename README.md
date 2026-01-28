@@ -19,7 +19,7 @@ to using [Square Brackets]. Changing the [ ] in the config file, will break the 
 **Changing the color of the tag needs to be done through the TagConfig.json in the /mods/ca_ezchat/ folder.
 Doing this through a command and eventually a UI will come very soon.**
 
-**This plugin currently rely's on https://github.com/Zoltus/TinyMessage/**
+**This plugin currently relies on https://github.com/Zoltus/TinyMessage/**
 ---
 
 ## 🧩 Example Chat Format
