@@ -22,9 +22,6 @@ public class EZChat extends JavaPlugin {
 
     private final Config<TagConfig> tagConfig;
 
-//    @Getter
-//    private ComponentType<EntityStore, PlayerConfig> playerDataType;
-
     @Getter
     private static EZChat instance;
 
@@ -39,7 +36,7 @@ public class EZChat extends JavaPlugin {
     protected void setup() {
         LOGGER.at(Level.INFO).log("[EZ Chat] Setting up...");
 
-//        this.playerDataType = getEntityStoreRegistry().registerComponent(PlayerConfig.class, "PlayerDataComponent", PlayerConfig.CODEC);
+
         this.tagConfig.save();
 
         // Register commands
