@@ -1,4 +1,4 @@
-package ca.sullyq.ezchat.commands;
+package ca.sullyq.ezchat.commands.subcommands;
 
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 public class HelpSubCommand extends CommandBase {
     public HelpSubCommand() {
         super("help", "Show available commands");
+        this.requirePermission("ezchat.commands.help");
     }
 
     @Override

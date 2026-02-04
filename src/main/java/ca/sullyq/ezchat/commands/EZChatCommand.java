@@ -1,5 +1,7 @@
 package ca.sullyq.ezchat.commands;
 
+import ca.sullyq.ezchat.commands.subcommands.HelpSubCommand;
+import ca.sullyq.ezchat.commands.subcommands.UISubCommand;
 import ca.sullyq.ezchat.commands.tags.player.GiveTagToPlayerCommand;
 import ca.sullyq.ezchat.commands.tags.TagCommand;
 import ca.sullyq.ezchat.config.TagConfig;
@@ -14,6 +16,8 @@ public class EZChatCommand extends AbstractCommandCollection {
 
         // Add subcommands
         this.addSubCommand(new HelpSubCommand());
+        this.addSubCommand(new UISubCommand());
+
         this.addSubCommand(new TagCommand(config));
         this.addSubCommand(new GiveTagToPlayerCommand(config));
     }

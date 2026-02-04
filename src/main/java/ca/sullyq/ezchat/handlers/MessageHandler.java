@@ -1,6 +1,5 @@
 package ca.sullyq.ezchat.handlers;
 
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import fi.sulku.hytale.TinyMsg;
 
