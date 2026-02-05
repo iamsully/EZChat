@@ -1,6 +1,6 @@
 package ca.sullyq.ezchat.commands.tags;
 
-import ca.sullyq.ezchat.config.TagConfig;
+import ca.sullyq.ezchat.config.EZChatConfig;
 import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 
 public class AddTagSubCommand extends CommandBase {
 
-    private final Config<TagConfig> config;
+    private final Config<EZChatConfig> ezChatConfig;
 
     private final String[] acceptedColors = {"black", "dark_blue", "dark_green", "dark_aqua", "dark_red",
             "dark_purple", "gold", "gray", "dark_gray", "blue",
@@ -28,9 +28,9 @@ public class AddTagSubCommand extends CommandBase {
     private final int TAG_NAME_LENGTH = 10;
 
 
-    public AddTagSubCommand(Config<TagConfig> config) {
+    public AddTagSubCommand(Config<EZChatConfig> config) {
         super("add", "Adds a new tag on the server(config)");
-        this.config = config;
+        this.ezChatConfig = config;
         this.tagName = withRequiredArg("name", "The new tag to add", ArgTypes.STRING);
         this.color = withRequiredArg("color", "The color for this tag", ArgTypes.STRING);
     }
@@ -38,7 +38,7 @@ public class AddTagSubCommand extends CommandBase {
     @Override
     protected void executeSync(@NonNullDecl CommandContext commandContext) {
 
-        TagConfig tagConfig = config.get();
+        EZChatConfig EZChatConfig = ezChatConfig.get();
 
         String tagArg = tagName.get(commandContext);
         String colorArg = color.get(commandContext);
@@ -51,7 +51,7 @@ public class AddTagSubCommand extends CommandBase {
         // TODO: Make the tag customizable
         String newTag = "[" + tagArg + "]";
 
-        boolean isTagAlreadyCreated = tagConfig.getTags().containsKey(newTag);
+        boolean isTagAlreadyCreated = EZChatConfig.getTags().containsKey(newTag);
 
         if (isTagAlreadyCreated) {
             Message tagAlreadyCreated = TinyMsg.parse("<color:red>This tag has already been created</color>");
@@ -70,10 +70,10 @@ public class AddTagSubCommand extends CommandBase {
             }
         }
 
-        tagConfig.getTags().put(newTag, colorArg);
+        EZChatConfig.getTags().put(newTag, colorArg);
 
         // TODO: Use the completable future and make sure this completes.
-        config.save();
+        ezChatConfig.save();
 
         Message savedMessage = TinyMsg.parse("Saved new tag: " + "<color:" + colorArg + ">" + newTag + "</color>");
         commandContext.sendMessage(savedMessage);

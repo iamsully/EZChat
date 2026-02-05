@@ -1,6 +1,6 @@
 package ca.sullyq.ezchat.commands.tags;
 
-import ca.sullyq.ezchat.config.TagConfig;
+import ca.sullyq.ezchat.config.EZChatConfig;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
@@ -13,7 +13,7 @@ import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 public class RemoveTagSubCommand extends CommandBase {
 
-    private final Config<TagConfig> config;
+    private final Config<EZChatConfig> ezChatConfig;
 
     private final String[] acceptedColors = {"black", "dark_blue", "dark_green", "dark_aqua", "dark_red",
             "dark_purple", "gold", "gray", "dark_gray", "blue",
@@ -23,16 +23,16 @@ public class RemoveTagSubCommand extends CommandBase {
     private final RequiredArg<String> tagName;
 
 
-    public RemoveTagSubCommand(Config<TagConfig> config) {
+    public RemoveTagSubCommand(Config<EZChatConfig> config) {
         super("remove", "Removes a tag on the server(config)");
-        this.config = config;
+        this.ezChatConfig = config;
         this.tagName = withRequiredArg("name", "The tag to remove", ArgTypes.STRING);
     }
 
     @Override
     protected void executeSync(@NonNullDecl CommandContext commandContext) {
 
-        TagConfig tagConfig = config.get();
+        EZChatConfig EZChatConfig = ezChatConfig.get();
 
         String tagArg = tagName.get(commandContext);
 
@@ -40,7 +40,7 @@ public class RemoveTagSubCommand extends CommandBase {
         String tagToRemove = "[" + tagArg + "]";
 
 
-        boolean isTagCreated = tagConfig.getTags().containsKey(tagToRemove);
+        boolean isTagCreated = EZChatConfig.getTags().containsKey(tagToRemove);
 
         if (!isTagCreated) {
             Message tagAlreadyCreatedMessage = TinyMsg.parse("<color:red>This tag has not yet been created</color>");
@@ -48,10 +48,10 @@ public class RemoveTagSubCommand extends CommandBase {
             return;
         }
 
-        tagConfig.getTags().remove(tagToRemove);
+        EZChatConfig.getTags().remove(tagToRemove);
 
         // TODO: Use the completable future and make sure this completes.
-        config.save();
+        ezChatConfig.save();
 
         Message removedTagMessage = TinyMsg.parse("<color:green>This tag has been removed</color>");
         commandContext.sendMessage(removedTagMessage);

@@ -2,7 +2,7 @@ package ca.sullyq.ezchat.events;
 
 import ca.sullyq.ezchat.EZChat;
 import ca.sullyq.ezchat.config.PlayerConfig;
-import ca.sullyq.ezchat.config.TagConfig;
+import ca.sullyq.ezchat.config.EZChatConfig;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
@@ -21,7 +21,7 @@ public class ChatEvent {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     private static final Config<PlayerConfig> playerConfig = EZChat.getInstance().getPlayerConfig();
-    private static final Config<TagConfig> tagConfig = EZChat.getInstance().getTagConfig();
+    private static final Config<EZChatConfig> tagConfig = EZChat.getInstance().getTagConfig();
 
     public static void onPlayerChat(PlayerChatEvent playerChatEvent) {
 

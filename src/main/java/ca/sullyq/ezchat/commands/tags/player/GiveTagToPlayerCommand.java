@@ -2,7 +2,7 @@ package ca.sullyq.ezchat.commands.tags.player;
 
 import ca.sullyq.ezchat.EZChat;
 import ca.sullyq.ezchat.config.PlayerConfig;
-import ca.sullyq.ezchat.config.TagConfig;
+import ca.sullyq.ezchat.config.EZChatConfig;
 import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -25,14 +25,14 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    private final Config<TagConfig> tagConfig;
+    private final Config<EZChatConfig> ezChatConfig;
     private final Config<PlayerConfig> playerConfig = EZChat.getInstance().getPlayerConfig();
 
     private final RequiredArg<String> tagArg;
 
-    public GiveTagToPlayerCommand(Config<TagConfig> config) {
+    public GiveTagToPlayerCommand(Config<EZChatConfig> config) {
         super("give", "Give a tag to a player");
-        this.tagConfig = config;
+        this.ezChatConfig = config;
         this.tagArg = withRequiredArg("Tag", "The tag to give the player", ArgTypes.STRING);
     }
 
@@ -60,7 +60,7 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
         // TODO: This is silly.. i know.
         String tagToGive = "[" + tag + "]";
 
-        boolean isTagCreated = tagConfig.get().getTags().containsKey(tagToGive);
+        boolean isTagCreated = ezChatConfig.get().getTags().containsKey(tagToGive);
 
         if (!isTagCreated) {
             MessageHelper.sendErrorMessage(commandContext, "Tag not found");

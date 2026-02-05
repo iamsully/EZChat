@@ -1,6 +1,6 @@
 package ca.sullyq.ezchat.commands.tags;
 
-import ca.sullyq.ezchat.config.TagConfig;
+import ca.sullyq.ezchat.config.EZChatConfig;
 import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -14,20 +14,20 @@ import java.util.Map;
 
 public class ListTagSubCommand extends CommandBase {
 
-    private final Config<TagConfig> config;
+    private final Config<EZChatConfig> ezChatConfig;
 
-    public ListTagSubCommand(Config<TagConfig> config) {
+    public ListTagSubCommand(Config<EZChatConfig> config) {
         super("list", "List all the tags");
-        this.config = config;
+        this.ezChatConfig = config;
         this.setPermissionGroup(null);
     }
 
     @Override
     protected void executeSync(@NonNullDecl CommandContext commandContext) {
 
-        TagConfig tagConfig = config.get();
+        EZChatConfig EZChatConfig = ezChatConfig.get();
 
-        Map<String, String> playerTagsMap = tagConfig.getTags();
+        Map<String, String> playerTagsMap = EZChatConfig.getTags();
 
         if (playerTagsMap.isEmpty()) {
             MessageHelper.sendErrorMessage(commandContext, "There is no created Tags");
