@@ -14,6 +14,7 @@ import java.util.Map;
 public class TagConfig {
 
     private Map<String, String> tags = new HashMap<>();
+    private Map<String, String> chatFormats = new HashMap<>();
 
     public TagConfig() {
 //        this.playerTags.put("[Admin]", "#f84848");
