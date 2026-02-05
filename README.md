@@ -41,7 +41,7 @@ Example:
 
 ```json
 {
-  "PlayerTags": {
+  "Tags": {
     "[Admin]": "red",
     "[RandomTag]": "blue",
     "[HexTag]": "#ff00ff"
@@ -51,7 +51,7 @@ Example:
 
 ## 🚀 Installation
 
-1. Download the EZChat plugin JAR
+1. Download the EZChat & TinyMsg plugin JAR
 2. Place it in your server’s mods directory
 3. Restart the server
 4. Configure prefixes to your liking
