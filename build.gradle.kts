@@ -33,7 +33,6 @@ tasks.withType<Jar> {
     archiveFileName.set("ezchat-1.0.0.jar")
 }
 
-
 tasks.test {
     useJUnitPlatform()
 }

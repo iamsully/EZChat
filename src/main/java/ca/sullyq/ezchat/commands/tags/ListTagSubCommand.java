@@ -1,7 +1,7 @@
 package ca.sullyq.ezchat.commands.tags;
 
 import ca.sullyq.ezchat.config.TagConfig;
-import ca.sullyq.ezchat.handlers.MessageHandler;
+import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
@@ -30,7 +30,7 @@ public class ListTagSubCommand extends CommandBase {
         Map<String, String> playerTagsMap = tagConfig.getTags();
 
         if (playerTagsMap.isEmpty()) {
-            MessageHandler.sendErrorMessage(commandContext, "There is no created Tags");
+            MessageHelper.sendErrorMessage(commandContext, "There is no created Tags");
             return;
         }
 

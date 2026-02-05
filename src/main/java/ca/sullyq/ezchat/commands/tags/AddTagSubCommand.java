@@ -1,7 +1,7 @@
 package ca.sullyq.ezchat.commands.tags;
 
 import ca.sullyq.ezchat.config.TagConfig;
-import ca.sullyq.ezchat.handlers.MessageHandler;
+import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
@@ -44,7 +44,7 @@ public class AddTagSubCommand extends CommandBase {
         String colorArg = color.get(commandContext);
 
         if (tagArg.length() > TAG_NAME_LENGTH) {
-            MessageHandler.sendErrorMessage(commandContext, "This tag is too long. (Max " + TAG_NAME_LENGTH + " characters)");
+            MessageHelper.sendErrorMessage(commandContext, "This tag is too long. (Max " + TAG_NAME_LENGTH + " characters)");
             return;
         }
 
@@ -65,7 +65,7 @@ public class AddTagSubCommand extends CommandBase {
             boolean acceptedNamedColor = Arrays.asList(acceptedColors).contains(colorArg);
 
             if (!acceptedNamedColor) {
-                MessageHandler.sendErrorMessage(commandContext, "This isn't a valid color.");
+                MessageHelper.sendErrorMessage(commandContext, "This isn't a valid color.");
                 return;
             }
         }

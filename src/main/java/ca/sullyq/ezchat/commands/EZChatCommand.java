@@ -10,7 +10,6 @@ import com.hypixel.hytale.server.core.util.Config;
 
 public class EZChatCommand extends AbstractCommandCollection {
 
-
     public EZChatCommand(Config<TagConfig> config) {
         super("ec", "EZChat plugin commands");
 
@@ -24,6 +23,6 @@ public class EZChatCommand extends AbstractCommandCollection {
 
     @Override
     protected boolean canGeneratePermission() {
-        return true;
+        return false;
     }
 }

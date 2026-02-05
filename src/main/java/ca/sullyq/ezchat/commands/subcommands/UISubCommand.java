@@ -25,7 +25,7 @@ public class UISubCommand extends AbstractPlayerCommand {
 
     @Override
     protected boolean canGeneratePermission() {
-        return false;
+        return true;
     }
 
     /**

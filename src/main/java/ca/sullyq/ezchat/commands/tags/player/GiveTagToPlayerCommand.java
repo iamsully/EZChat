@@ -3,7 +3,7 @@ package ca.sullyq.ezchat.commands.tags.player;
 import ca.sullyq.ezchat.EZChat;
 import ca.sullyq.ezchat.config.PlayerConfig;
 import ca.sullyq.ezchat.config.TagConfig;
-import ca.sullyq.ezchat.handlers.MessageHandler;
+import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.logger.HytaleLogger;
@@ -40,13 +40,13 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
     protected void execute(@NonNullDecl CommandContext commandContext, @NullableDecl Ref<EntityStore> senderRef, @NonNullDecl Ref<EntityStore> targetRef, @NonNullDecl PlayerRef playerRef, @NonNullDecl World world, @NonNullDecl Store<EntityStore> store) {
 
         if (playerConfig == null) {
-            MessageHandler.sendErrorMessage(commandContext, "Couldn't find the PlayerConfig");
+            MessageHelper.sendErrorMessage(commandContext, "Couldn't find the PlayerConfig");
             return;
         }
 
         // TODO: Implement the --overwrite flag
         if (playerConfig.get().getPlayerTags().containsKey(playerRef.getUuid().toString())) {
-            MessageHandler.sendWarningMessage(commandContext, "This player has a tag already, please use the --overwrite flag to overwrite their tag");
+            MessageHelper.sendWarningMessage(commandContext, "This player has a tag already, please use the --overwrite flag to overwrite their tag");
         }
 
         LOGGER.at(Level.INFO).log(playerRef.getUsername());
@@ -63,7 +63,7 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
         boolean isTagCreated = tagConfig.get().getTags().containsKey(tagToGive);
 
         if (!isTagCreated) {
-            MessageHandler.sendErrorMessage(commandContext, "Tag not found");
+            MessageHelper.sendErrorMessage(commandContext, "Tag not found");
             return;
         }
 
@@ -71,7 +71,7 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
 
         playerConfig.save();
 
-        MessageHandler.sendSuccessMessage(commandContext, "Successfully gave " + playerRef.getUsername() + " the tag " + tagToGive);
+        MessageHelper.sendSuccessMessage(commandContext, "Successfully gave " + playerRef.getUsername() + " the tag " + tagToGive);
 
     }
 

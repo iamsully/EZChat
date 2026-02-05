@@ -1,9 +1,9 @@
-package ca.sullyq.ezchat.handlers;
+package ca.sullyq.ezchat.helpers;
 
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import fi.sulku.hytale.TinyMsg;
 
-public class MessageHandler {
+public class MessageHelper {
 
     public static void sendErrorMessage(CommandContext commandContext, String message) {
         commandContext.sendMessage(TinyMsg.parse("<color:#f84848><bold>" + message + "</bold></color>"));

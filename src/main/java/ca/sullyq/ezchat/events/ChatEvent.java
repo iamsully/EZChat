@@ -6,14 +6,17 @@ import ca.sullyq.ezchat.config.TagConfig;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
+import com.hypixel.hytale.server.core.permissions.PermissionsModule;
 import com.hypixel.hytale.server.core.util.Config;
 import fi.sulku.hytale.TinyMsg;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class PlayerChatEventListener {
+public class ChatEvent {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
@@ -32,10 +35,12 @@ public class PlayerChatEventListener {
         String playerTag = playerTags.get(uuid.toString());
         String tagColor = tagConfig.get().getTags().get(playerTag);
 
-        LOGGER.at(Level.INFO).log(playerTag);
-
         Message startingTag = TinyMsg.parse("<color:" + tagColor + ">" + playerTag + "</color> ");
         Message formattedUsername = TinyMsg.parse("<color:" + tagColor + ">" + username + "</color> " + ": ");
+
+        Set<String> playerGroups = PermissionsModule.get().getGroupsForUser(uuid);
+
+        LOGGER.at(Level.INFO).log(Arrays.toString(playerGroups.toArray()));
 
         if (!playerTag.isEmpty() && !tagColor.isEmpty()) {
             playerChatEvent.setFormatter(((playerRef, message) -> Message.join(
