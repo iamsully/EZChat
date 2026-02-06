@@ -1,6 +1,6 @@
 package ca.sullyq.ezchat.commands.tags;
 
-import ca.sullyq.ezchat.config.EZChatConfig;
+import ca.sullyq.ezchat.config.TagConfig;
 import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -14,30 +14,28 @@ import java.util.Map;
 
 public class ListTagSubCommand extends CommandBase {
 
-    private final Config<EZChatConfig> ezChatConfig;
+    private final Config<TagConfig> tagConfig;
 
-    public ListTagSubCommand(Config<EZChatConfig> config) {
+    public ListTagSubCommand(Config<TagConfig> config) {
         super("list", "List all the tags");
-        this.ezChatConfig = config;
+        this.tagConfig = config;
         this.setPermissionGroup(null);
     }
 
     @Override
     protected void executeSync(@NonNullDecl CommandContext commandContext) {
 
-        EZChatConfig EZChatConfig = ezChatConfig.get();
+        Map<String, String> tagsMap = tagConfig.get().getTags();
 
-        Map<String, String> playerTagsMap = EZChatConfig.getTags();
-
-        if (playerTagsMap.isEmpty()) {
+        if (tagsMap.isEmpty()) {
             MessageHelper.sendErrorMessage(commandContext, "There is no created Tags");
             return;
         }
 
         StringBuilder formattedString = new StringBuilder();
 
-        playerTagsMap.forEach((key, value) -> {
-            formattedString.append("<color:").append(value).append(">").append(key).append("</color>").append(" ");
+        tagsMap.forEach((key, value) -> {
+            formattedString.append(value).append(" ");
         });
 
         Message message = TinyMsg.parse(formattedString.toString());

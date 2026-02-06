@@ -2,13 +2,14 @@ package ca.sullyq.ezchat;
 
 import ca.sullyq.ezchat.commands.EZChatCommand;
 import ca.sullyq.ezchat.config.PlayerConfig;
-import ca.sullyq.ezchat.config.EZChatConfig;
+import ca.sullyq.ezchat.config.TagConfig;
 import ca.sullyq.ezchat.events.ChatEvent;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.util.Config;
+import dev.unnm3d.codeclib.config.CodecFactory;
 import lombok.Getter;
 
 import javax.annotation.Nonnull;
@@ -19,9 +20,8 @@ public class EZChat extends JavaPlugin {
 
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
-    private final Config<EZChatConfig> tagConfig;
-
     private final Config<PlayerConfig> playerConfig;
+    private final Config<TagConfig> tagConfig;
 
     @Getter
     private static EZChat instance;
@@ -29,16 +29,16 @@ public class EZChat extends JavaPlugin {
     public EZChat(@Nonnull JavaPluginInit init) {
         super(init);
         instance = this;
-        this.tagConfig = this.withConfig("Config", EZChatConfig.CODEC);
         this.playerConfig = this.withConfig("PlayerTagConfig", PlayerConfig.CODEC);
+        this.tagConfig = this.withConfig("TagConfig", TagConfig.CODEC);
     }
 
     @Override
     protected void setup() {
         LOGGER.at(Level.INFO).log("[EZ Chat] Setting up...");
 
-        this.tagConfig.save();
         this.playerConfig.save();
+        this.tagConfig.save();
 
         // Register commands
         registerCommands();

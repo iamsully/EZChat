@@ -44,3 +44,6 @@ bin/
 
 libs/HytaleServer.jar
 libs/tinymessage-2.0.0.jar
+libs/codeclib-1.1.0.jar
+
+NOTES.md

@@ -11,22 +11,20 @@ import java.util.Map;
 
 @Getter
 @Setter
-public class EZChatConfig {
+public class TagConfig {
 
     private Map<String, String> tags = new HashMap<>();
-    private Map<String, String> chatFormats = new HashMap<>();
 
-    public EZChatConfig() {
-//        this.playerTags.put("[Admin]", "#f84848");
+    public TagConfig() {
+        tags.put("Admin", "<color:red><b>[Admin]</b></color>");
     }
 
-    public static final BuilderCodec<EZChatConfig> CODEC =
-            BuilderCodec.<EZChatConfig>builder(EZChatConfig.class, EZChatConfig::new)
+    public static final BuilderCodec<TagConfig> CODEC =
+            BuilderCodec.<TagConfig>builder(TagConfig.class, TagConfig::new)
 
                     .append(new KeyedCodec<>("Tags", new MapCodec<>(BuilderCodec.STRING, HashMap::new, false)),
                             (data, value) -> data.tags = value,
                             data -> data.tags)
                     .add()
                     .build();
-
 }

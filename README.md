@@ -60,23 +60,12 @@ Example:
 ---
 
 ## 🛠️ Planned Features
-
 - Per-player custom prefixes ✅
 - Color & formatting support ✅
-- Permission-based prefix assignment ❌
-- Chat formatting customization ❌
+- Tag formatting customization ❌
 - Prefix stacking (e.g. `[Admin][Dev]`) ❌
 - Links ❌
 - Private & Group messaging ❌
-- Custom join/leave messages ❌
-
----
-
-## 🧪 Compatibility
-
-- Hytale Server API (when available)
-- Designed to work alongside other server plugins
-
 ---
 
 ## 💬 Support

@@ -2,7 +2,7 @@ package ca.sullyq.ezchat.events;
 
 import ca.sullyq.ezchat.EZChat;
 import ca.sullyq.ezchat.config.PlayerConfig;
-import ca.sullyq.ezchat.config.EZChatConfig;
+import ca.sullyq.ezchat.config.TagConfig;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
@@ -21,34 +21,42 @@ public class ChatEvent {
     private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
 
     private static final Config<PlayerConfig> playerConfig = EZChat.getInstance().getPlayerConfig();
-    private static final Config<EZChatConfig> tagConfig = EZChat.getInstance().getTagConfig();
+    private static final Config<TagConfig> tagConfig = EZChat.getInstance().getTagConfig();
 
     public static void onPlayerChat(PlayerChatEvent playerChatEvent) {
+//        UUID uuid = playerChatEvent.getSender().getUuid();
+//        String username = playerChatEvent.getSender().getUsername();
+//
+//        Map<String, String> playerTags = playerConfig.get().getPlayerTags();
+//
+//        if (playerTags.isEmpty()) return;
+//
+//        String playerTag = playerTags.get(uuid.toString());
+//        String tagColor = tagConfig.get().getTags().get(playerTag);
+//
+//        Message startingTag = TinyMsg.parse("<color:" + tagColor + ">" + playerTag + "</color> ");
+//        Message formattedUsername = TinyMsg.parse("<color:" + tagColor + ">" + username + "</color> " + ": ");
+//
+//        Set<String> playerGroups = PermissionsModule.get().getGroupsForUser(uuid);
+//
+//        LOGGER.at(Level.INFO).log(Arrays.toString(playerGroups.toArray()));
+//
+//        if (!playerTag.isEmpty() && !tagColor.isEmpty()) {
+//            playerChatEvent.setFormatter(((playerRef, message) -> Message.join(
+//                    startingTag,
+//                    formattedUsername,
+//                    Message.raw(message)
+//            )));
+//        }
 
-        UUID uuid = playerChatEvent.getSender().getUuid();
-        String username = playerChatEvent.getSender().getUsername();
+        String rank = tagConfig.get().getTags().get("Tester3");
 
-        Map<String, String> playerTags = playerConfig.get().getPlayerTags();
-
-        if (playerTags.isEmpty()) return;
-
-        String playerTag = playerTags.get(uuid.toString());
-        String tagColor = tagConfig.get().getTags().get(playerTag);
-
-        Message startingTag = TinyMsg.parse("<color:" + tagColor + ">" + playerTag + "</color> ");
-        Message formattedUsername = TinyMsg.parse("<color:" + tagColor + ">" + username + "</color> " + ": ");
-
-        Set<String> playerGroups = PermissionsModule.get().getGroupsForUser(uuid);
-
-        LOGGER.at(Level.INFO).log(Arrays.toString(playerGroups.toArray()));
-
-        if (!playerTag.isEmpty() && !tagColor.isEmpty()) {
-            playerChatEvent.setFormatter(((playerRef, message) -> Message.join(
-                    startingTag,
-                    formattedUsername,
-                    Message.raw(message)
-            )));
-        }
+        Message rankMessage = TinyMsg.parse(rank);
+        playerChatEvent.setFormatter(((playerRef, message) -> Message.join(
+                rankMessage,
+                Message.raw(playerRef.getUsername()),
+                Message.raw(message)
+        )));
     }
 
 }
