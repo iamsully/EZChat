@@ -6,17 +6,15 @@ import com.hypixel.hytale.server.core.util.Config;
 
 public class TagCommand extends AbstractCommandCollection {
 
-    private final Config<TagConfig> tagConfig;
-
-    public TagCommand(Config<TagConfig> config) {
+    public TagCommand() {
         super("tag", "Manages the tags");
-        this.tagConfig = config;
+        this.addAliases("t");
         this.setPermissionGroup(null);
 
 //        this.addSubCommand(new AddTagSubCommand(config));
-//        this.addSubCommand(new RemoveTagSubCommand(config));
-        this.addSubCommand(new ListTagSubCommand(config));
-        this.addSubCommand(new ReloadTagSubCommand(config));
+        this.addSubCommand(new RemoveTagSubCommand());
+        this.addSubCommand(new ListTagSubCommand());
+        this.addSubCommand(new ReloadTagSubCommand());
     }
 
     @Override

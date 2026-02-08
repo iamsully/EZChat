@@ -9,7 +9,6 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.util.Config;
-import dev.unnm3d.codeclib.config.CodecFactory;
 import lombok.Getter;
 
 import javax.annotation.Nonnull;
@@ -54,7 +53,7 @@ public class EZChat extends JavaPlugin {
      */
     private void registerCommands() {
         try {
-            getCommandRegistry().registerCommand(new EZChatCommand(tagConfig));
+            getCommandRegistry().registerCommand(new EZChatCommand());
             LOGGER.at(Level.INFO).log("[EZ Chat] Registered /ec command");
         } catch (Exception e) {
             LOGGER.at(Level.WARNING).withCause(e).log("[EZ Chat] Failed to register commands");

@@ -1,5 +1,6 @@
 package ca.sullyq.ezchat.commands.tags;
 
+import ca.sullyq.ezchat.EZChat;
 import ca.sullyq.ezchat.config.TagConfig;
 import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.server.core.Message;
@@ -13,18 +14,18 @@ import java.util.Map;
 
 public class ReloadTagSubCommand extends CommandBase {
 
-    private final Config<TagConfig> tagConfig;
+    private final Config<TagConfig> tagConfig = EZChat.getInstance().getTagConfig();
 
-    public ReloadTagSubCommand(Config<TagConfig> config) {
+    public ReloadTagSubCommand() {
         super("reload", "reload the tags config");
-        this.tagConfig = config;
+        this.addAliases("rl");
         this.setPermissionGroup(null);
     }
 
     @Override
     protected void executeSync(@NonNullDecl CommandContext commandContext) {
         this.tagConfig.load();
-        MessageHelper.sendSuccessMessage(commandContext, "Successfully saved TagConfig.json");
+        MessageHelper.sendSuccessMessage(commandContext, "Successfully reloaded Tag Config");
     }
 
 }

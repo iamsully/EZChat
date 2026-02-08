@@ -29,7 +29,7 @@ dependencies {
 
 
 tasks.withType<Jar> {
-    destinationDirectory.set(file("/home/sully/Development/Hytale/Servers/1.28-server/Server/mods/"))
+    destinationDirectory.set(file("/home/sully/Development/Hytale/Servers/dev-server/Server/mods/"))
 
     // Optional: configure the jar file name
     archiveFileName.set("ezchat-1.0.0.jar")

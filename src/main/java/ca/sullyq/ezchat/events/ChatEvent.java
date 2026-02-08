@@ -24,39 +24,24 @@ public class ChatEvent {
     private static final Config<TagConfig> tagConfig = EZChat.getInstance().getTagConfig();
 
     public static void onPlayerChat(PlayerChatEvent playerChatEvent) {
-//        UUID uuid = playerChatEvent.getSender().getUuid();
-//        String username = playerChatEvent.getSender().getUsername();
-//
-//        Map<String, String> playerTags = playerConfig.get().getPlayerTags();
-//
-//        if (playerTags.isEmpty()) return;
-//
-//        String playerTag = playerTags.get(uuid.toString());
-//        String tagColor = tagConfig.get().getTags().get(playerTag);
-//
-//        Message startingTag = TinyMsg.parse("<color:" + tagColor + ">" + playerTag + "</color> ");
-//        Message formattedUsername = TinyMsg.parse("<color:" + tagColor + ">" + username + "</color> " + ": ");
-//
-//        Set<String> playerGroups = PermissionsModule.get().getGroupsForUser(uuid);
-//
-//        LOGGER.at(Level.INFO).log(Arrays.toString(playerGroups.toArray()));
-//
-//        if (!playerTag.isEmpty() && !tagColor.isEmpty()) {
-//            playerChatEvent.setFormatter(((playerRef, message) -> Message.join(
-//                    startingTag,
-//                    formattedUsername,
-//                    Message.raw(message)
-//            )));
-//        }
+        UUID uuid = playerChatEvent.getSender().getUuid();
 
-        String rank = tagConfig.get().getTags().get("Tester3");
+        Map<String, String> playerTags = playerConfig.get().getPlayerTags();
 
-        Message rankMessage = TinyMsg.parse(rank);
-        playerChatEvent.setFormatter(((playerRef, message) -> Message.join(
-                rankMessage,
-                Message.raw(playerRef.getUsername()),
-                Message.raw(message)
-        )));
+        if (playerTags.isEmpty()) return;
+
+        String tagName = playerTags.get(uuid.toString());
+        String playerTag = tagConfig.get().getTags().get(tagName);
+
+        Message startingTag = TinyMsg.parse(playerTag + " ");
+
+        if (!playerTag.isEmpty()) {
+            playerChatEvent.setFormatter(((playerRef, message) -> Message.join(
+                    startingTag,
+                    TinyMsg.parse("<b>" + playerRef.getUsername() + ":</b> "),
+                    TinyMsg.parse("<color:#E6E6E6>" + message + "</color>")
+            )));
+        }
     }
 
 }

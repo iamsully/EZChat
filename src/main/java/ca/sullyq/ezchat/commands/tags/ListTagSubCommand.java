@@ -1,5 +1,6 @@
 package ca.sullyq.ezchat.commands.tags;
 
+import ca.sullyq.ezchat.EZChat;
 import ca.sullyq.ezchat.config.TagConfig;
 import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.server.core.Message;
@@ -14,11 +15,10 @@ import java.util.Map;
 
 public class ListTagSubCommand extends CommandBase {
 
-    private final Config<TagConfig> tagConfig;
+    private final Config<TagConfig> tagConfig = EZChat.getInstance().getTagConfig();
 
-    public ListTagSubCommand(Config<TagConfig> config) {
+    public ListTagSubCommand() {
         super("list", "List all the tags");
-        this.tagConfig = config;
         this.setPermissionGroup(null);
     }
 
