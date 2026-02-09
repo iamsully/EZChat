@@ -27,7 +27,8 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
     private final FlagArg confirmOverwriteTagArg;
 
     public GiveTagToPlayerCommand() {
-        super("give", "Give a tag to a player");
+        super("give-tag", "Give a tag to a player");
+        this.addAliases("gvtag", "gt");
         this.tagArg = withRequiredArg("tag", "The tag to give the player", ArgTypes.STRING);
         this.confirmOverwriteTagArg = withFlagArg("confirm", "Overwrite the players current tag");
     }

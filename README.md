@@ -1,7 +1,8 @@
-# EZChat ( Currently Under Development )
+# EZChat
 
-**EZChat** is a lightweight Hytale server plugin that enhances chat by adding customizable prefixes to player usernames.
-
+**EZChat** is a lightweight Hytale server plugin that enhances chat by adding customizable prefixes to player usernames,
+functionality to post links, and direct messaging other players on the server. It is intended for **"vanilla"** servers that want
+common chat features, without all the added overhead from other "essential" plugins.
 ---
 
 ## ✨ Features
@@ -11,15 +12,8 @@
 - Clean and minimal formatting
 - Lightweight & performance-friendly
 
-**This plugin is in active development and currently does not support specific permissions.
-Server Admins must have the OP permission to use these commands. Tags will be customizable in the future, but right now
-default
-to using [Square Brackets]. Changing the [ ] in the config file, will break the plugin.**
+**Using < Angle Brackets > will break the plugin.**
 
-**Changing the color of the tag needs to be done through the TagConfig.json in the /mods/ca_ezchat/ folder.
-Doing this through a command and eventually a UI will come very soon.**
-
-**This plugin currently relies on https://github.com/Zoltus/TinyMessage/**
 ---
 
 ## 🧩 Example Chat Format
@@ -35,23 +29,24 @@ Doing this through a command and eventually a UI will come very soon.**
 
 ## ⚙️ Configuration
 
-EZChat uses a simple configuration system to define prefixes.
+EZChat uses a very customizable configuration system to define prefixes.
 
 Example:
 
 ```json
 {
   "Tags": {
-    "[Admin]": "red",
-    "[RandomTag]": "blue",
-    "[HexTag]": "#ff00ff"
+    "Tester": "<color:blue><b>[Tester]</b></color>",
+    "Tester3": "<gradient:blue:red:green:blue><u>[Tester3]</u></gradient>",
+    "Admin": "<color:red><b><mono>[Admin]</mono></b></color>",
+    "Tester2": "<color:blue><u>[Tester2]</u></color>"
   }
 }
 ```
 
 ## 🚀 Installation
 
-1. Download the EZChat & TinyMsg plugin JAR
+1. Download the EZChat JAR
 2. Place it in your server’s mods directory
 3. Restart the server
 4. Configure prefixes to your liking
@@ -60,12 +55,14 @@ Example:
 ---
 
 ## 🛠️ Planned Features
+
 - Per-player custom prefixes ✅
 - Color & formatting support ✅
 - Tag formatting customization ❌
 - Prefix stacking (e.g. `[Admin][Dev]`) ❌
 - Links ❌
 - Private & Group messaging ❌
+
 ---
 
 ## 💬 Support
@@ -73,8 +70,3 @@ Example:
 This plugin is actively developed.  
 If you find bugs, have feature requests, or have any questions, please [Join Discord](https://discord.gg/8TbaDcT7jC) and
 reach out
----
-
-## 📄 License
-
-MIT
