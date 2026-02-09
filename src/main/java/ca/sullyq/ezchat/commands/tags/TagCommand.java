@@ -1,8 +1,6 @@
 package ca.sullyq.ezchat.commands.tags;
 
-import ca.sullyq.ezchat.config.TagConfig;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractCommandCollection;
-import com.hypixel.hytale.server.core.util.Config;
 
 public class TagCommand extends AbstractCommandCollection {
 

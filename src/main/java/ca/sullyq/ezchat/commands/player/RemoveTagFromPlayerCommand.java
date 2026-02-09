@@ -7,7 +7,6 @@ import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.arguments.system.FlagArg;
 import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractTargetPlayerCommand;
@@ -18,18 +17,16 @@ import com.hypixel.hytale.server.core.util.Config;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 
-public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
+public class RemoveTagFromPlayerCommand extends AbstractTargetPlayerCommand {
 
     private final Config<TagConfig> tagConfig = EZChat.getInstance().getTagConfig();
     private final Config<PlayerConfig> playerConfig = EZChat.getInstance().getPlayerConfig();
 
     private final RequiredArg<String> tagArg;
-    private final FlagArg confirmOverwriteTagArg;
 
-    public GiveTagToPlayerCommand() {
-        super("give", "Give a tag to a player");
+    public RemoveTagFromPlayerCommand() {
+        super("remove", "Give a tag to a player");
         this.tagArg = withRequiredArg("tag", "The tag to give the player", ArgTypes.STRING);
-        this.confirmOverwriteTagArg = withFlagArg("confirm", "Overwrite the players current tag");
     }
 
     @Override
@@ -40,13 +37,14 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
             return;
         }
 
-        boolean isOverwrite = confirmOverwriteTagArg.get(commandContext);
-
-        if (playerConfig.get().getPlayerTags().containsKey(playerRef.getUuid().toString()) && !isOverwrite) {
-            MessageHelper.sendWarningMessage(commandContext, "This player has a tag already, please use the --confirm flag to overwrite their tag");
+        if (!playerConfig.get().getPlayerTags().containsKey(playerRef.getUuid().toString())) {
+            MessageHelper.sendWarningMessage(commandContext, "This player does not have a tag");
             return;
         }
 
+        /* TODO -- Maybe just have the command /ec remove. Having to specify the tag seems redundant considering there's
+             Only one tag per player..
+        */
         String tag = tagArg.get(commandContext);
 
         boolean isTagCreated = tagConfig.get().getTags().containsKey(tag);
@@ -56,11 +54,11 @@ public class GiveTagToPlayerCommand extends AbstractTargetPlayerCommand {
             return;
         }
 
-        playerConfig.get().getPlayerTags().put(playerRef.getUuid().toString(), tag);
+        playerConfig.get().getPlayerTags().remove(playerRef.getUuid().toString());
 
         playerConfig.save();
 
-        MessageHelper.sendSuccessMessage(commandContext, "Successfully gave " + playerRef.getUsername() + " the tag " + tag);
+        MessageHelper.sendSuccessMessage(commandContext, "Successfully removed " + tag + " from " + playerRef.getUsername());
 
     }
 
