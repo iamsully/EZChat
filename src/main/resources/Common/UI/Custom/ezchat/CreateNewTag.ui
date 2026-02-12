@@ -16,11 +16,11 @@ $Common = "../Common.ui";
 
 // Main container
 Group {
-  Anchor: (Width: 300, Height: 500);
+  Anchor: (Width: 500, Height: 700);
   Background: #141c26(0.98);
   LayoutMode: Top;
   Padding: (Full: 20);
-
+  FlexWeight: 1;
   // Title
   Label {
     Text: "Create A New Tag";
@@ -53,50 +53,34 @@ Group {
     Padding: (Full: 10);
   }
 
-  Label {
-    Text: "Color";
-    Anchor: (Top: 5, Left: 10, Height: 24);
-    Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
-  }
-
-  TextField #TagColorInput {
-    Style: $Common.@DefaultInputFieldStyle;
-    Background: $Common.@InputBoxBackground;
-    Anchor: (Bottom: 5, Left: 10, Width: 200, Height: 30);
-    Padding: (Full: 10);
-  }
-
   // Checkboxes
 
-  // Bold
-  Label {
-    Text: "Bold";
-    Anchor: (Top: 5, Left: 10, Height: 24);
-    Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
+  $Common.@CheckBoxWithLabel #TagBoldCheckBox {
+    @Text = "Bold";
+    Anchor: (Bottom: 5, Left: 10, Width: 100, Height: 30);
   }
 
-  CheckBox #TagBoldCheckBox {
-    Style: $Common.@DefaultCheckBoxStyle;
-    Background: $Common.@InputBoxBackground;
-    Anchor: (Bottom: 5, Left: 10, Width: 30, Height: 30);
-  }
-
-  // Italic
-  Label {
-    Text: "Italic";
-    Anchor: (Top: 5, Left: 10, Height: 24);
-    Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
-  }
-
-  CheckBox #TagItalicCheckBox {
-    Style: $Common.@DefaultCheckBoxStyle;
-    Background: $Common.@InputBoxBackground;
-    Anchor: (Bottom: 5, Left: 10, Width: 30, Height: 30);
+  $Common.@CheckBoxWithLabel #TagItalicCheckBox {
+    @Text = "Italic";
+    Anchor: (Bottom: 5, Left: 10, Width: 100, Height: 30);
   }
 
   $Common.@CheckBoxWithLabel #TagMonospaceCheckBox {
     @Text = "Monospaced";
     Anchor: (Bottom: 5, Left: 10, Width: 100, Height: 30);
+  }
+
+  Label #TagColorLabel {
+    Text: "Tag Color";
+    Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
+    Anchor: (Bottom: 5, Left: 10);
+  }
+
+  ColorPicker #TagColorPicker {
+    Anchor: (Left: 10, Top: 5, Bottom: 30, Right: 30);
+    FlexWeight: 1;
+    DisplayTextField: true;
+    Style: $Common.@DefaultColorPickerStyle;
   }
 
   // Spacer

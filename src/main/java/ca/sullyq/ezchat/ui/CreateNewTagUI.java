@@ -1,5 +1,6 @@
 package ca.sullyq.ezchat.ui;
 
+import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
@@ -8,12 +9,14 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hypixel.hytale.protocol.packets.interface_.NotificationStyle;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.hypixel.hytale.server.core.util.NotificationUtil;
 
 import javax.annotation.Nonnull;
 import java.util.logging.Level;
@@ -24,10 +27,19 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
 
     private final HytaleLogger logger = HytaleLogger.forEnclosingClass();
     private final PlayerRef playerRef;
+
+    private final String startingColorTag = "<color:%s>";
+    private final String endingColorTag = "</color>";
     private final String startingBoldTag = "<b>";
     private final String endingBoldTag = "</b>";
+    private final String startingItalicTag = "<i>";
+    private final String endingItalicTag = "</i>";
+    private final String startingMonospaceTag = "<mono>";
+    private final String endingMonospaceTag = "</mono>";
 
 
+    private String tagName;
+    private String tagColor;
     private boolean isBold;
     private boolean isItalic;
     private boolean isMonospace;
@@ -42,40 +54,53 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
     public void build(
             @Nonnull Ref<EntityStore> ref,
             @Nonnull UICommandBuilder cmd,
-            @Nonnull UIEventBuilder evt,
+            @Nonnull UIEventBuilder eventBuilder,
             @Nonnull Store<EntityStore> store
     ) {
         // Load base layout
         cmd.append(LAYOUT);
 
         // Bind refresh button
-        evt.addEventBinding(
+        eventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#SaveButton",
                 new EventData().append("Action", "save"),
                 false
         );
 
-        evt.addEventBinding(CustomUIEventBindingType.ValueChanged,
-                "#TagBoldCheckBox",
+        // Bind text fields
+        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+                "#TagNameInput",
+                EventData.of("@TagName", "#TagNameInput.Value"),
+                false);
+
+        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+                "#TagColorPicker",
+                EventData.of("@TagColorPicker", "#TagColorPicker.Value"),
+                false);
+
+
+        // Bind checkboxes
+        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+                "#TagBoldCheckBox #CheckBox",
                 new EventData().append("CheckBox", "Bold"),
                 false
         );
 
-        evt.addEventBinding(CustomUIEventBindingType.ValueChanged,
-                "#TagItalicCheckBox",
+        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+                "#TagItalicCheckBox #CheckBox",
                 new EventData().append("CheckBox", "Italic"),
                 false
         );
 
-        evt.addEventBinding(CustomUIEventBindingType.ValueChanged,
+        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
                 "#TagMonospaceCheckBox #CheckBox",
                 new EventData().append("CheckBox", "Monospace"),
                 false
         );
 
         // Bind close button
-        evt.addEventBinding(
+        eventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#CloseButton",
                 new EventData().append("Action", "close"),
@@ -91,6 +116,14 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
     ) {
         super.handleDataEvent(ref, store, data);
 
+        if (data.tagColorPicker != null) {
+            logger.at(Level.INFO).log(data.tagColorPicker);
+        }
+
+        if (data.tagName != null) {
+            this.tagName = data.tagName;
+        }
+
         if (data.checkbox != null) {
             switch (data.checkbox) {
                 case "Bold":
@@ -105,8 +138,9 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
                     break;
 
             }
-            this.sendUpdate();
         }
+
+        this.sendUpdate();
 
         if (data.action == null) return;
 
@@ -115,7 +149,6 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
                 logger.at(Level.INFO).log(this.isBold ? " Yes, its bold" : "Nope, not bold");
                 logger.at(Level.INFO).log(this.isMonospace ? " Yes, its monospace" : "Nope, not monospace");
                 logger.at(Level.INFO).log(this.isItalic ? " Yes, its italic" : "Nope, not italic");
-
                 createTag(this.isBold, this.isItalic, this.isMonospace);
                 break;
             case "close":
@@ -127,7 +160,12 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
     }
 
     private void createTag(boolean isBold, boolean isItalic, boolean isMonospace) {
-        String tag = "TagName";
+        if (this.tagName == null || this.tagName.isEmpty()) {
+            NotificationUtil.sendNotification(playerRef.getPacketHandler(), "The tag name cannot be empty.", NotificationStyle.Danger);
+        }
+
+
+        String tag = this.tagName;
         StringBuilder tagStringBuilder = new StringBuilder(tag);
 
         if (isBold) {
@@ -135,8 +173,16 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
             tagStringBuilder.insert(tag.length() + startingBoldTag.length(), endingBoldTag);
         }
 
-        logger.at(Level.INFO).log(tagStringBuilder.toString());
+        if (isItalic) {
+            tagStringBuilder.insert(0, startingItalicTag);
+            tagStringBuilder.insert(tagStringBuilder.length(), endingItalicTag);
+        }
 
+        if (isMonospace) {
+            tagStringBuilder.insert(0, startingMonospaceTag);
+            tagStringBuilder.insert(tagStringBuilder.length(), endingMonospaceTag);
+        }
+        logger.at(Level.INFO).log(tagStringBuilder.toString());
     }
 
     /**
@@ -150,11 +196,16 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
                 .add()
                 .append(new KeyedCodec<>("CheckBox", Codec.STRING), (e, v) -> e.checkbox = v, e -> e.checkbox)
                 .add()
-
+                .append(new KeyedCodec<>("@TagName", Codec.STRING), (e, v) -> e.tagName = v, e -> e.tagName)
+                .add()
+                .append(new KeyedCodec<>("@TagColorPicker", Codec.STRING), (e, v) -> e.tagColorPicker = v, e -> e.tagColorPicker)
+                .add()
                 .build();
 
         private String action;
         private String checkbox;
+        private String tagName;
+        private String tagColorPicker;
 
         public UIEventData() {
         }
