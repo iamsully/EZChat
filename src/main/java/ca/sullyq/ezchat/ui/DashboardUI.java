@@ -19,15 +19,15 @@ import com.hypixel.hytale.server.core.util.NotificationUtil;
 
 import javax.annotation.Nonnull;
 
-public class TestUI extends InteractiveCustomUIPage<TestUI.UIEventData> {
+public class DashboardUI extends InteractiveCustomUIPage<DashboardUI.UIEventData> {
 
     // Path relative to Common/UI/Custom/
-    public static final String LAYOUT = "ezchat/TestUI.ui";
+    public static final String LAYOUT = "ezchat/Dashboard.ui";
 
     private final PlayerRef playerRef;
     private int refreshCount = 0;
 
-    public TestUI(@Nonnull PlayerRef playerRef) {
+    public DashboardUI(@Nonnull PlayerRef playerRef) {
         super(playerRef, CustomPageLifetime.CanDismiss, UIEventData.CODEC);
         this.playerRef = playerRef;
     }

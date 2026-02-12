@@ -18,8 +18,6 @@ import java.util.logging.Level;
 
 public class ChatEvent {
 
-    private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
-
     private static final Config<PlayerConfig> playerConfig = EZChat.getInstance().getPlayerConfig();
     private static final Config<TagConfig> tagConfig = EZChat.getInstance().getTagConfig();
 

@@ -1,7 +1,7 @@
 package ca.sullyq.ezchat.commands.subcommands;
 
 
-import ca.sullyq.ezchat.ui.TestUI;
+import ca.sullyq.ezchat.ui.CreateNewTagUI;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
@@ -19,8 +19,6 @@ public class UISubCommand extends AbstractPlayerCommand {
 
     public UISubCommand() {
         super("ui", "Open the plugin dashboard");
-        this.addAliases(new String[]{"dashboard", "gui"});
-        //   this.setPermissionGroup(HytalePermissions.);
     }
 
     @Override
@@ -39,8 +37,6 @@ public class UISubCommand extends AbstractPlayerCommand {
             @Nonnull PlayerRef playerRef,
             @Nonnull World world
     ) {
-        context.sendMessage(Message.raw("Opening EZChat Dashboard..."));
-
         try {
             // Get the player component (safe - we're on world thread)
             Player player = store.getComponent(ref, Player.getComponentType());
@@ -50,11 +46,10 @@ public class UISubCommand extends AbstractPlayerCommand {
             }
 
             // Create and open the custom page
-            TestUI dashboardPage = new TestUI(playerRef);
-            player.getPageManager().openCustomPage(ref, store, dashboardPage);
-            context.sendMessage(Message.raw("Dashboard opened. Press ESC to close."));
+            CreateNewTagUI createNewTagPage = new CreateNewTagUI(playerRef);
+            player.getPageManager().openCustomPage(ref, store, createNewTagPage);
         } catch (Exception e) {
-            context.sendMessage(Message.raw("Error opening dashboard: " + e.getMessage()));
+            context.sendMessage(Message.raw("Error opening Create New Tag Page: " + e.getMessage()));
         }
     }
 }

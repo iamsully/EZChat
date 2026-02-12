@@ -31,7 +31,7 @@ common chat features, without all the added overhead from other "essential" plug
 
 EZChat uses a very customizable configuration system to define prefixes.
 
-Example:
+**Example:**
 
 ```json
 {

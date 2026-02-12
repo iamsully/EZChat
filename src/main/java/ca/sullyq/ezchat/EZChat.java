@@ -17,7 +17,7 @@ import java.util.logging.Level;
 @Getter
 public class EZChat extends JavaPlugin {
 
-    private static final HytaleLogger LOGGER = HytaleLogger.forEnclosingClass();
+    private static final HytaleLogger logger = HytaleLogger.forEnclosingClass();
 
     private final Config<PlayerConfig> playerConfig;
     private final Config<TagConfig> tagConfig;
@@ -34,7 +34,7 @@ public class EZChat extends JavaPlugin {
 
     @Override
     protected void setup() {
-        LOGGER.at(Level.INFO).log("[EZ Chat] Setting up...");
+        logger.at(Level.INFO).log("[EZ Chat] Setting up...");
 
         this.playerConfig.save();
         this.tagConfig.save();
@@ -45,7 +45,7 @@ public class EZChat extends JavaPlugin {
         // Register event listeners
         registerListeners();
 
-        LOGGER.at(Level.INFO).log("[EZ Chat] Setup complete!");
+        logger.at(Level.INFO).log("[EZ Chat] Setup complete!");
     }
 
     /**
@@ -54,9 +54,9 @@ public class EZChat extends JavaPlugin {
     private void registerCommands() {
         try {
             getCommandRegistry().registerCommand(new EZChatCommand());
-            LOGGER.at(Level.INFO).log("[EZ Chat] Registered /ec command");
+            logger.at(Level.INFO).log("[EZ Chat] Registered /ec command");
         } catch (Exception e) {
-            LOGGER.at(Level.WARNING).withCause(e).log("[EZ Chat] Failed to register commands");
+            logger.at(Level.WARNING).withCause(e).log("[EZ Chat] Failed to register commands");
         }
     }
 
@@ -66,21 +66,21 @@ public class EZChat extends JavaPlugin {
     private void registerListeners() {
         try {
             this.getEventRegistry().registerGlobal(PlayerChatEvent.class, ChatEvent::onPlayerChat);
-            LOGGER.at(Level.INFO).log("[EZ Chat] Registered player event listeners");
+            logger.at(Level.INFO).log("[EZ Chat] Registered player event listeners");
         } catch (Exception e) {
-            LOGGER.at(Level.WARNING).withCause(e).log("[EZ Chat] Failed to register listeners");
+            logger.at(Level.WARNING).withCause(e).log("[EZ Chat] Failed to register listeners");
         }
     }
 
     @Override
     protected void start() {
-        LOGGER.at(Level.INFO).log("[EZ Chat] Started!");
-        LOGGER.at(Level.INFO).log("[EZ Chat] Use /ec help for commands");
+        logger.at(Level.INFO).log("[EZ Chat] Started!");
+        logger.at(Level.INFO).log("[EZ Chat] Use /ec help for commands");
     }
 
     @Override
     protected void shutdown() {
-        LOGGER.at(Level.INFO).log("[EZ Chat] Shutting down...");
+        logger.at(Level.INFO).log("[EZ Chat] Shutting down...");
         instance = null;
     }
 
