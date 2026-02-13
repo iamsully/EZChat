@@ -24,37 +24,59 @@ Group {
   // Title
   Label {
     Text: "Create A New Tag";
-    Anchor: (Height: 40);
-    Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
+    Anchor: (Bottom: 10, Height: 40);
+    Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true, RenderUppercase: true);
   }
 
   // Separator
   Group { Anchor: (Height: 1); Background: #2b3542; }
   Group { Anchor: (Height: 16); }
 
-  // Status text
-  //  Label #StatusText {
-  //    Text: "Welcome to SullysChat!";
-  //    Anchor: (Height: 30);
-  //    Style: (FontSize: 16, TextColor: #96a9be, HorizontalAlignment: Center);
-  //  }
+  Group #NameSymbolGroup {
+    LayoutMode: Top;
+    //    Label {
+    //      Text: "Start Symbol";
+    //      Anchor: (Right: 5, Left: 10, Height: 24);
+    //      Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
+    //    }
+    //
+    //    TextField #TagStartSymbolInput {
+    //      Style: $Common.@DefaultInputFieldStyle;
+    //      Background: $Common.@InputBoxBackground;
+    //      Anchor: (Right: 10, Bottom: 10, Left: 10, Width: 30, Height: 30);
+    //    }
+    Label {
+      Text: "Name";
+      Anchor: (Left: 10, Height: 24);
+      Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
+    }
 
-  // Add section
-  Label {
-    Text: "Name";
-    Anchor: (Left: 10, Height: 24);
-    Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
-  }
+    TextField #TagNameInput {
+      Style: $Common.@DefaultInputFieldStyle;
+      Background: $Common.@InputBoxBackground;
+      Anchor: (Bottom: 10, Left: 10, Width: 175, Height: 30);
+      Padding: (Left: 5, Right: 5);
+    }
 
-  TextField #TagNameInput {
-    Style: $Common.@DefaultInputFieldStyle;
-    Background: $Common.@InputBoxBackground;
-    Anchor: (Bottom: 5, Left: 10, Width: 200, Height: 30);
-    Padding: (Full: 10);
+    //    Label {
+    //      Text: "End Symbol";
+    //      Anchor: (Right: 5, Left: 10, Height: 24);
+    //      Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
+    //    }
+    //
+    //    TextField #TagStartSymbolInput {
+    //      Style: $Common.@DefaultInputFieldStyle;
+    //      Background: $Common.@InputBoxBackground;
+    //      Anchor: (Right: 10, Bottom: 10, Left: 10, Width: 30, Height: 30);
+    //    }
   }
 
   // Checkboxes
-
+  Label {
+    Text: "Style";
+    Anchor: (Left: 10, Height: 24);
+    Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
+  }
   $Common.@CheckBoxWithLabel #TagBoldCheckBox {
     @Text = "Bold";
     Anchor: (Bottom: 5, Left: 10, Width: 100, Height: 30);
@@ -77,19 +99,16 @@ Group {
   }
 
   ColorPicker #TagColorPicker {
-    Anchor: (Left: 10, Top: 5, Bottom: 30, Right: 30);
+    Anchor: (Left: 10, Top: 5, Right: 30);
     FlexWeight: 1;
     DisplayTextField: true;
     Style: $Common.@DefaultColorPickerStyle;
   }
 
-  // Spacer
-  Group { FlexWeight: 1; }
-
   // Buttons row
   Group {
     LayoutMode: Center;
-    Anchor: (Height: 50);
+    Anchor: (Top: 20, Height: 50);
 
     TextButton #SaveButton {
       Text: "Save";
@@ -104,13 +123,5 @@ Group {
       Anchor: (Width: 100, Height: 44);
       Style: @SecondaryButton;
     }
-  }
-
-  // Footer
-  Group { Anchor: (Height: 8); }
-  Label {
-    Text: "Press ESC to close";
-    Anchor: (Height: 16);
-    Style: (FontSize: 11, TextColor: #555555, HorizontalAlignment: Center);
   }
 }

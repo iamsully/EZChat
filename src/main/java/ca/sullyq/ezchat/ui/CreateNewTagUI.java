@@ -53,12 +53,14 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
     @Override
     public void build(
             @Nonnull Ref<EntityStore> ref,
-            @Nonnull UICommandBuilder cmd,
+            @Nonnull UICommandBuilder uiCommandBuilder,
             @Nonnull UIEventBuilder eventBuilder,
             @Nonnull Store<EntityStore> store
     ) {
         // Load base layout
-        cmd.append(LAYOUT);
+        uiCommandBuilder.append(LAYOUT);
+
+        uiCommandBuilder.set("#TagColorPicker.Value", String.format("#%06X", (0xFF0000)));
 
         // Bind refresh button
         eventBuilder.addEventBinding(
