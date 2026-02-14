@@ -148,10 +148,7 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
 
         switch (data.action) {
             case "save":
-                logger.at(Level.INFO).log(this.isBold ? " Yes, its bold" : "Nope, not bold");
-                logger.at(Level.INFO).log(this.isMonospace ? " Yes, its monospace" : "Nope, not monospace");
-                logger.at(Level.INFO).log(this.isItalic ? " Yes, its italic" : "Nope, not italic");
-                createTag(this.isBold, this.isItalic, this.isMonospace);
+                createTag();
                 break;
             case "close":
                 this.close();
@@ -161,11 +158,11 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
         this.sendUpdate();
     }
 
-    private void createTag(boolean isBold, boolean isItalic, boolean isMonospace) {
+    private void createTag() {
         if (this.tagName == null || this.tagName.isEmpty()) {
             NotificationUtil.sendNotification(playerRef.getPacketHandler(), "The tag name cannot be empty.", NotificationStyle.Danger);
+            return;
         }
-
 
         String tag = this.tagName;
         StringBuilder tagStringBuilder = new StringBuilder(tag);

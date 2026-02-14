@@ -71,25 +71,27 @@ Group {
     //    }
   }
 
-  // Checkboxes
-  Label {
-    Text: "Style";
-    Anchor: (Left: 10, Height: 24);
-    Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
-  }
-  $Common.@CheckBoxWithLabel #TagBoldCheckBox {
-    @Text = "Bold";
-    Anchor: (Bottom: 5, Left: 10, Width: 100, Height: 30);
-  }
+  Group #CheckBoxesGroup {
+    // Checkboxes
+    Label {
+      Text: "Style";
+      Anchor: (Left: 10, Height: 24);
+      Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
+    }
+    $Common.@CheckBoxWithLabel #TagBoldCheckBox {
+      @Text = "Bold";
+      Anchor: (Bottom: 5, Left: 10, Width: 100, Height: 30);
+    }
 
-  $Common.@CheckBoxWithLabel #TagItalicCheckBox {
-    @Text = "Italic";
-    Anchor: (Bottom: 5, Left: 10, Width: 100, Height: 30);
-  }
+    $Common.@CheckBoxWithLabel #TagItalicCheckBox {
+      @Text = "Italic";
+      Anchor: (Bottom: 5, Left: 10, Width: 100, Height: 30);
+    }
 
-  $Common.@CheckBoxWithLabel #TagMonospaceCheckBox {
-    @Text = "Monospaced";
-    Anchor: (Bottom: 5, Left: 10, Width: 100, Height: 30);
+    $Common.@CheckBoxWithLabel #TagMonospaceCheckBox {
+      @Text = "Monospaced";
+      Anchor: (Bottom: 5, Left: 10, Width: 100, Height: 30);
+    }
   }
 
   Label #TagColorLabel {
