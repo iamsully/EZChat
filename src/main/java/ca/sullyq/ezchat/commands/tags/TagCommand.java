@@ -9,7 +9,7 @@ public class TagCommand extends AbstractCommandCollection {
         this.addAliases("t");
         this.setPermissionGroup(null);
 
-//        this.addSubCommand(new AddTagSubCommand(config));
+        this.addSubCommand(new AddTagSubCommand());
         this.addSubCommand(new RemoveTagSubCommand());
         this.addSubCommand(new ListTagSubCommand());
         this.addSubCommand(new ReloadTagSubCommand());

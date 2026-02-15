@@ -1,87 +1,24 @@
 package ca.sullyq.ezchat.commands.tags;
 
 import ca.sullyq.ezchat.config.TagConfig;
-import ca.sullyq.ezchat.helpers.MessageHelper;
-import ca.sullyq.ezchat.helpers.MessageParser;
+import ca.sullyq.ezchat.ui.CreateNewTagUI;
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
-import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
-import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
+import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
+import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.util.Config;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
-import java.util.Arrays;
 
-public class AddTagSubCommand extends CommandBase {
+public class AddTagSubCommand extends AbstractPlayerCommand {
 
-    private final Config<TagConfig> tagConfig;
-
-    private final String[] acceptedColors = {"black", "dark_blue", "dark_green", "dark_aqua", "dark_red",
-            "dark_purple", "gold", "gray", "dark_gray", "blue",
-            "green", "aqua", "red", "light_purple", "yellow", "white"};
-
-
-    private final RequiredArg<String> tagName;
-    private final RequiredArg<String> color;
-
-    private final int TAG_NAME_LENGTH = 10;
-
-
-    public AddTagSubCommand(Config<TagConfig> config) {
-        super("add", "Adds a new tag on the server(config)");
-        this.tagConfig = config;
-        this.tagName = withRequiredArg("name", "The new tag to add", ArgTypes.STRING);
-        this.color = withRequiredArg("color", "The color for this tag", ArgTypes.STRING);
-    }
-
-    @Override
-    protected void executeSync(@NonNullDecl CommandContext commandContext) {
-
-        TagConfig tagConfig = this.tagConfig.get();
-
-        if (tagConfig == null) {
-            return;
-        }
-
-        String tagArg = tagName.get(commandContext);
-        String colorArg = color.get(commandContext);
-
-        if (tagArg.length() > TAG_NAME_LENGTH) {
-            MessageHelper.sendErrorMessage(commandContext, "This tag is too long. (Max " + TAG_NAME_LENGTH + " characters)");
-            return;
-        }
-
-        // TODO: Make the tag customizable
-        String newTag = "[" + tagArg + "]";
-
-        boolean isTagAlreadyCreated = tagConfig.getTags().containsKey(newTag);
-
-        if (isTagAlreadyCreated) {
-            Message tagAlreadyCreated = MessageParser.parse("<color:red>This tag has already been created</color>");
-            commandContext.sendMessage(tagAlreadyCreated);
-            return;
-        }
-
-        boolean isHexColor = colorArg.startsWith("#") && colorArg.length() == 7;
-
-        if (!isHexColor) {
-            boolean acceptedNamedColor = Arrays.asList(acceptedColors).contains(colorArg);
-
-            if (!acceptedNamedColor) {
-                MessageHelper.sendErrorMessage(commandContext, "This isn't a valid color.");
-                return;
-            }
-        }
-
-        tagConfig.getTags().put(newTag, colorArg);
-
-        // TODO: Use the completable future and make sure this completes.
-        this.tagConfig.save();
-
-        Message savedMessage = MessageParser.parse("Saved new tag: " + "<color:" + colorArg + ">" + newTag + "</color>");
-        commandContext.sendMessage(savedMessage);
-
+    public AddTagSubCommand() {
+        super("add", "Opens the gui to create a new tag");
     }
 
     @Override
@@ -89,4 +26,19 @@ public class AddTagSubCommand extends CommandBase {
         return true;
     }
 
+    @Override
+    protected void execute(@NonNullDecl CommandContext commandContext, @NonNullDecl Store<EntityStore> store, @NonNullDecl Ref<EntityStore> ref, @NonNullDecl PlayerRef playerRef, @NonNullDecl World world) {
+        try {
+            Player player = store.getComponent(ref, Player.getComponentType());
+            if (player == null) {
+                commandContext.sendMessage(Message.raw("Error: Could not get Player component."));
+                return;
+            }
+
+            CreateNewTagUI createNewTagPage = new CreateNewTagUI(playerRef);
+            player.getPageManager().openCustomPage(ref, store, createNewTagPage);
+        } catch (Exception e) {
+            commandContext.sendMessage(Message.raw("Error opening Create New Tag Page: " + e.getMessage()));
+        }
+    }
 }

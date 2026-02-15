@@ -73,7 +73,6 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
         uiCommandBuilder.set("#TagColorPicker.Value", String.format("#%06X", (0xFF0000)));
 
         tagColor = String.format("#%06X", (0xFF0000));
-        startingColorTag = this.startingColorTag.formatted(tagColor);
 
         // Bind refresh button
         eventBuilder.addEventBinding(
@@ -144,7 +143,10 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
         super.handleDataEvent(ref, store, data);
 
         if (data.tagColorPicker != null) {
-            this.startingColorTag = startingColorTag.formatted(data.tagColorPicker);
+            logger.at(Level.INFO).log(data.tagColorPicker);
+            tagColor = data.tagColorPicker;
+
+            logger.at(Level.INFO).log(startingColorTag);
         }
 
         if (data.tagName != null) {
@@ -258,14 +260,15 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
             tagStringBuilder.insert(tagStringBuilder.length(), endingUnderlineTag);
         }
 
+        startingColorTag = startingColorTag.formatted(tagColor.substring(0, 7));
+
         tagStringBuilder.insert(0, startingColorTag);
         tagStringBuilder.insert(tagStringBuilder.length(), endingColorTag);
 
-        logger.at(Level.INFO).log(tagStringBuilder.toString());
-        logger.at(Level.INFO).log(tagId);
+        saveTagToConfig(tagStringBuilder.toString());
     }
 
-    private void saveTagToConfig() {
+    private void saveTagToConfig(String newTag) {
         TagConfig cfg = this.tagConfig.get();
         if (cfg == null) {
             NotificationUtil.sendNotification(playerRef.getPacketHandler(),
@@ -281,10 +284,14 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
             return;
         }
 
-        cfg.getTags().put(tagId, tagName);
+        cfg.getTags().put(tagId, newTag);
+        this.tagConfig.save();
+
         NotificationUtil.sendNotification(playerRef.getPacketHandler(),
                 "Successfully created the " + tagId + " tag and reloaded the tag config",
                 NotificationStyle.Success);
+
+        this.close();
     }
 
     /**

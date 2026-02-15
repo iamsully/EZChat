@@ -1,114 +1,36 @@
-// EZChat Dashboard UI
-// Import Common.ui for reusable components
 $Common = "../Common.ui";
+$Common.@PageOverlay {
+  $Common.@DecoratedContainer {
+    Anchor: (Width: 600, Height: 300);
 
-// Custom button styles
-@PrimaryButton = TextButtonStyle(
-  Default: (Background: #3a7bd5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 14, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
-);
-
-@SecondaryButton = TextButtonStyle(
-  Default: (Background: #2b3542, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Hovered: (Background: #3b4552, LabelStyle: (FontSize: 14, TextColor: #b6c9de, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-  Pressed: (Background: #1b2532, LabelStyle: (FontSize: 14, TextColor: #96a9be, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
-);
-
-// Main container
-Group {
-  Anchor: (Width: 600, Height: 400);
-  Background: #141c26(0.98);
-  LayoutMode: Top;
-  Padding: (Full: 20);
-
-  // Title
-  Label {
-    Text: "EZ Chat Dashboard";
-    Anchor: (Height: 40);
-    Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center, RenderBold: true);
-  }
-
-  // Separator
-  Group { Anchor: (Height: 1); Background: #2b3542; }
-  Group { Anchor: (Height: 16); }
-
-  // Status text
-  //  Label #StatusText {
-  //    Text: "Welcome to SullysChat!";
-  //    Anchor: (Height: 30);
-  //    Style: (FontSize: 16, TextColor: #96a9be, HorizontalAlignment: Center);
-  //  }
-
-  // Add section
-  Label {
-    Text: "Name";
-    Anchor: (Left: 10, Height: 24);
-    Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
-  }
-
-  TextField #TagNameInput {
-    Style: $Common.@DefaultInputFieldStyle;
-    Background: $Common.@InputBoxBackground;
-    Anchor: (Top: 5, Left: 10, Width: 200, Height: 30);
-    Padding: (Full: 10);
-  }
-
-  Label {
-    Text: "Color";
-    Anchor: (Top: 5, Left: 10, Height: 24);
-    Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
-  }
-
-  TextField #TagColorInput {
-    Style: $Common.@DefaultInputFieldStyle;
-    Background: $Common.@InputBoxBackground;
-    Anchor: (Top: 5, Left: 10, Width: 200, Height: 30);
-    Padding: (Full: 10);
-  }
-
-  // Checkboxes
-  Label {
-    Text: "Tag Color";
-    Anchor: (Top: 5, Left: 10, Height: 24);
-    Style: (FontSize: 14, TextColor: #ffffff, RenderBold: true);
-  }
-
-  TextField #TagColorInput {
-    Style: $Common.@DefaultInputFieldStyle;
-    Background: $Common.@InputBoxBackground;
-    Anchor: (Top: 5, Left: 10, Width: 200, Height: 30);
-    Padding: (Full: 10);
-  }
-
-  // Spacer
-  Group { FlexWeight: 1; }
-
-  // Buttons row
-  Group {
-    LayoutMode: Center;
-    Anchor: (Height: 50);
-
-    TextButton #RefreshButton {
-      Text: "Add";
-      Anchor: (Width: 100, Height: 44);
-      Style: @PrimaryButton;
+    #Title {
+      Group {
+        $Common.@Title {
+          @Text = "EZChat UI";
+        }
+      }
     }
 
-    Group { Anchor: (Width: 16); }
+    #Content {
+      LayoutMode: Left;
 
-    TextButton #CloseButton {
-      Text: "Close";
-      Anchor: (Width: 100, Height: 44);
-      Style: @SecondaryButton;
+      Group #Main {
+        LayoutMode: Top;
+
+        Group #TagsList {
+          Anchor: (Width: 580);
+          FlexWeight: 1;
+          LayoutMode: TopScrolling;
+          Padding: (Left: 4);
+          ScrollbarStyle: $Common.@DefaultScrollbarStyle;
+
+          Group #TagCards {
+            LayoutMode: Top;
+          }
+        }
+      }
     }
-  }
-
-  // Footer
-  Group { Anchor: (Height: 8); }
-  Label {
-    Text: "Press ESC to close";
-    Anchor: (Height: 16);
-    Style: (FontSize: 11, TextColor: #555555, HorizontalAlignment: Center);
   }
 }
+
+$Common.@BackButton {}
