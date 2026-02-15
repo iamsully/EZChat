@@ -10,8 +10,5 @@
   ],
   "Main": "ca.sullyq.ezchat.EZChat",
   "LoadOrder": "POSTWORLD",
-  "IncludesAssetPack": true,
-  "Dependencies": {
-    "Zoltus:TinyMessage": "*"
-  }
+  "IncludesAssetPack": true
 }

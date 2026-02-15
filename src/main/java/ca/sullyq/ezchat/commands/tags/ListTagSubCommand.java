@@ -3,11 +3,11 @@ package ca.sullyq.ezchat.commands.tags;
 import ca.sullyq.ezchat.EZChat;
 import ca.sullyq.ezchat.config.TagConfig;
 import ca.sullyq.ezchat.helpers.MessageHelper;
+import ca.sullyq.ezchat.helpers.MessageParser;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.CommandBase;
 import com.hypixel.hytale.server.core.util.Config;
-import fi.sulku.hytale.TinyMsg;
 import org.checkerframework.checker.nullness.compatqual.NonNullDecl;
 
 import java.util.Map;
@@ -38,7 +38,7 @@ public class ListTagSubCommand extends CommandBase {
             formattedString.append(value).append(" ");
         });
 
-        Message message = TinyMsg.parse(formattedString.toString());
+        Message message = MessageParser.parse(formattedString.toString());
 
         commandContext.sendMessage(message);
 

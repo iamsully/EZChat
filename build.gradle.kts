@@ -12,7 +12,6 @@ repositories {
 dependencies {
 
     compileOnly(files("libs/HytaleServer.jar"))
-    compileOnly(files("libs/tinymessage-2.0.0.jar"))
     compileOnly(files("libs/codeclib-1.1.0.jar"))
 
     // JSR305 annotations (@Nonnull, @Nullable)
