@@ -1,5 +1,7 @@
 package ca.sullyq.ezchat.ui;
 
+import ca.sullyq.ezchat.EZChat;
+import ca.sullyq.ezchat.config.TagConfig;
 import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
@@ -16,6 +18,7 @@ import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.hypixel.hytale.server.core.util.Config;
 import com.hypixel.hytale.server.core.util.NotificationUtil;
 
 import javax.annotation.Nonnull;
@@ -25,11 +28,17 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
     // Path relative to Common/UI/Custom/
     public static final String LAYOUT = "ezchat/CreateNewTag.ui";
 
+    private final Config<TagConfig> tagConfig = EZChat.getInstance().getTagConfig();
     private final HytaleLogger logger = HytaleLogger.forEnclosingClass();
     private final PlayerRef playerRef;
 
-    private final String startingColorTag = "<color:%s>";
+    private final int MAX_TAG_ID_LENGTH = 10;
+    private final int MAX_TAG_NAME_LENGTH = 20;
+
+    private String startingColorTag = "<color:%s>";
     private final String endingColorTag = "</color>";
+    private final String startingUnderlineTag = "<u>";
+    private final String endingUnderlineTag = "</u>";
     private final String startingBoldTag = "<b>";
     private final String endingBoldTag = "</b>";
     private final String startingItalicTag = "<i>";
@@ -37,10 +46,11 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
     private final String startingMonospaceTag = "<mono>";
     private final String endingMonospaceTag = "</mono>";
 
-
+    private String tagId;
     private String tagName;
     private String tagColor;
     private boolean isBold;
+    private boolean isUnderline;
     private boolean isItalic;
     private boolean isMonospace;
 
@@ -62,6 +72,9 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
 
         uiCommandBuilder.set("#TagColorPicker.Value", String.format("#%06X", (0xFF0000)));
 
+        tagColor = String.format("#%06X", (0xFF0000));
+        startingColorTag = this.startingColorTag.formatted(tagColor);
+
         // Bind refresh button
         eventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
@@ -75,6 +88,12 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
                 "#TagNameInput",
                 EventData.of("@TagName", "#TagNameInput.Value"),
                 false);
+
+        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+                "#TagIdInput",
+                EventData.of("@TagId", "#TagIdInput.Value"),
+                false);
+
 
         eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
                 "#TagColorPicker",
@@ -101,6 +120,12 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
                 false
         );
 
+        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+                "#TagUnderlineCheckBox #CheckBox",
+                new EventData().append("CheckBox", "Underline"),
+                false
+        );
+
         // Bind close button
         eventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
@@ -119,11 +144,15 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
         super.handleDataEvent(ref, store, data);
 
         if (data.tagColorPicker != null) {
-            logger.at(Level.INFO).log(data.tagColorPicker);
+            this.startingColorTag = startingColorTag.formatted(data.tagColorPicker);
         }
 
         if (data.tagName != null) {
             this.tagName = data.tagName;
+        }
+
+        if (data.tagId != null) {
+            this.tagId = data.tagId;
         }
 
         if (data.checkbox != null) {
@@ -134,15 +163,14 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
                 case "Italic":
                     this.isItalic = !this.isItalic;
                     break;
-
                 case "Monospace":
                     this.isMonospace = !this.isMonospace;
                     break;
-
+                case "Underline":
+                    this.isUnderline = !this.isUnderline;
+                    break;
             }
         }
-
-        this.sendUpdate();
 
         if (data.action == null) return;
 
@@ -159,17 +187,60 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
     }
 
     private void createTag() {
-        if (this.tagName == null || this.tagName.isEmpty()) {
-            NotificationUtil.sendNotification(playerRef.getPacketHandler(), "The tag name cannot be empty.", NotificationStyle.Danger);
+        if (tagName == null || tagName.isEmpty()) {
+            NotificationUtil.sendNotification(playerRef.getPacketHandler(),
+                    "The tag cannot be empty.",
+                    NotificationStyle.Danger);
             return;
         }
 
-        String tag = this.tagName;
-        StringBuilder tagStringBuilder = new StringBuilder(tag);
+        if (tagName.contains("<") || tagName.contains(">")) {
+            NotificationUtil.sendNotification(playerRef.getPacketHandler(),
+                    "The tag cannot contain < angle brackets >",
+                    NotificationStyle.Danger);
+            return;
+        }
+
+        if (tagName.length() > MAX_TAG_NAME_LENGTH) {
+            NotificationUtil.sendNotification(playerRef.getPacketHandler(),
+                    "The tag cannot be longer than " + MAX_TAG_NAME_LENGTH + " characters",
+                    NotificationStyle.Danger);
+            return;
+        }
+
+        if (tagId == null || tagId.isEmpty()) {
+            NotificationUtil.sendNotification(playerRef.getPacketHandler(),
+                    "The tag name / id cannot be empty.",
+                    NotificationStyle.Danger);
+            return;
+        }
+
+        if (!tagId.matches("[a-zA-Z]+")) {
+            NotificationUtil.sendNotification(playerRef.getPacketHandler(),
+                    "The tag name / id can only contain characters",
+                    NotificationStyle.Danger);
+            return;
+        }
+
+        if (tagId.length() > MAX_TAG_ID_LENGTH) {
+            NotificationUtil.sendNotification(playerRef.getPacketHandler(),
+                    "The tag id cannot be longer than " + MAX_TAG_ID_LENGTH + " characters",
+                    NotificationStyle.Danger);
+            return;
+        }
+
+        if (tagColor.isEmpty()) {
+            NotificationUtil.sendNotification(playerRef.getPacketHandler(),
+                    "Don't forget to pick a color!",
+                    NotificationStyle.Danger);
+            return;
+        }
+
+        StringBuilder tagStringBuilder = new StringBuilder(tagName);
 
         if (isBold) {
             tagStringBuilder.insert(0, startingBoldTag);
-            tagStringBuilder.insert(tag.length() + startingBoldTag.length(), endingBoldTag);
+            tagStringBuilder.insert(tagStringBuilder.length(), endingBoldTag);
         }
 
         if (isItalic) {
@@ -181,7 +252,39 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
             tagStringBuilder.insert(0, startingMonospaceTag);
             tagStringBuilder.insert(tagStringBuilder.length(), endingMonospaceTag);
         }
+
+        if (isUnderline) {
+            tagStringBuilder.insert(0, startingUnderlineTag);
+            tagStringBuilder.insert(tagStringBuilder.length(), endingUnderlineTag);
+        }
+
+        tagStringBuilder.insert(0, startingColorTag);
+        tagStringBuilder.insert(tagStringBuilder.length(), endingColorTag);
+
         logger.at(Level.INFO).log(tagStringBuilder.toString());
+        logger.at(Level.INFO).log(tagId);
+    }
+
+    private void saveTagToConfig() {
+        TagConfig cfg = this.tagConfig.get();
+        if (cfg == null) {
+            NotificationUtil.sendNotification(playerRef.getPacketHandler(),
+                    "Couldn't find the tag config file. Please try again",
+                    NotificationStyle.Danger);
+            return;
+        }
+
+        if (cfg.getTags().containsKey(tagId)) {
+            NotificationUtil.sendNotification(playerRef.getPacketHandler(),
+                    "There is already a tag with this ID. Please try again",
+                    NotificationStyle.Danger);
+            return;
+        }
+
+        cfg.getTags().put(tagId, tagName);
+        NotificationUtil.sendNotification(playerRef.getPacketHandler(),
+                "Successfully created the " + tagId + " tag and reloaded the tag config",
+                NotificationStyle.Success);
     }
 
     /**
@@ -197,6 +300,8 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
                 .add()
                 .append(new KeyedCodec<>("@TagName", Codec.STRING), (e, v) -> e.tagName = v, e -> e.tagName)
                 .add()
+                .append(new KeyedCodec<>("@TagId", Codec.STRING), (e, v) -> e.tagId = v, e -> e.tagId)
+                .add()
                 .append(new KeyedCodec<>("@TagColorPicker", Codec.STRING), (e, v) -> e.tagColorPicker = v, e -> e.tagColorPicker)
                 .add()
                 .build();
@@ -204,6 +309,7 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
         private String action;
         private String checkbox;
         private String tagName;
+        private String tagId;
         private String tagColorPicker;
 
         public UIEventData() {
