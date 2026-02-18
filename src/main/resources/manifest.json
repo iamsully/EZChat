@@ -8,6 +8,7 @@
       "Name": "Sullyq"
     }
   ],
+  "ServerVersion": "2026.02.17-255364b8e",
   "Main": "ca.sullyq.ezchat.EZChat",
   "LoadOrder": "POSTWORLD",
   "IncludesAssetPack": true

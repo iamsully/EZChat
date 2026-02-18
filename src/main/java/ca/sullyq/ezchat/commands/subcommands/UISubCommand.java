@@ -5,6 +5,7 @@ import ca.sullyq.ezchat.ui.CreateNewTagUI;
 import ca.sullyq.ezchat.ui.DashboardUI;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
@@ -42,7 +43,7 @@ public class UISubCommand extends AbstractPlayerCommand {
                 return;
             }
 
-            DashboardUI dashboardPage = new DashboardUI(playerRef);
+            DashboardUI dashboardPage = new DashboardUI(playerRef, CustomPageLifetime.CanDismiss);
             player.getPageManager().openCustomPage(ref, store, dashboardPage);
         } catch (Exception e) {
             commandContext.sendMessage(Message.raw("Error opening Create New Tag Page: " + e.getMessage()));

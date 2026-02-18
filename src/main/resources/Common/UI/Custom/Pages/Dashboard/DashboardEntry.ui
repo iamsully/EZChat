@@ -1,10 +1,10 @@
-$Common = "../Common.ui";
-Button #TheButton{
-  LayoutMode: Left;
-  Anchor: (Left: 2, Right: 2,Bottom: 5, Height: 60, Width: 550/3);
+$Common = "../../Common.ui";
+Button #TheButton {
+  LayoutMode: Center;
+  Anchor: (Left: 2, Right: 2, Bottom: 5, Height: 60, Width: 550/3);
   Background: $Common.@InputBoxBackground;
   Padding: (Top: 4, Bottom: 4);
-  Style:  ButtonStyle(
+  Style: ButtonStyle(
 
     Sounds: $Common.@ButtonSounds,
   );
@@ -13,7 +13,7 @@ Button #TheButton{
     FlexWeight: 1;
   }
 
-  Label #TagName {
+  Label #DashboardEntry {
     Style: (
       FontSize: 16,
       RenderBold: true,

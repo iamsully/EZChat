@@ -2,7 +2,6 @@ package ca.sullyq.ezchat.ui;
 
 import ca.sullyq.ezchat.EZChat;
 import ca.sullyq.ezchat.config.TagConfig;
-import ca.sullyq.ezchat.helpers.MessageHelper;
 import com.hypixel.hytale.codec.Codec;
 import com.hypixel.hytale.codec.KeyedCodec;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
@@ -12,6 +11,7 @@ import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.protocol.packets.interface_.NotificationStyle;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
@@ -26,7 +26,7 @@ import java.util.logging.Level;
 
 public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEventData> {
     // Path relative to Common/UI/Custom/
-    public static final String LAYOUT = "ezchat/CreateNewTag.ui";
+    public static final String LAYOUT = "Pages/Tags/CreateNewTag.ui";
 
     private final Config<TagConfig> tagConfig = EZChat.getInstance().getTagConfig();
     private final HytaleLogger logger = HytaleLogger.forEnclosingClass();
@@ -64,7 +64,7 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
     public void build(
             @Nonnull Ref<EntityStore> ref,
             @Nonnull UICommandBuilder uiCommandBuilder,
-            @Nonnull UIEventBuilder eventBuilder,
+            @Nonnull UIEventBuilder uiEventBuilder,
             @Nonnull Store<EntityStore> store
     ) {
         // Load base layout
@@ -74,8 +74,14 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
 
         tagColor = String.format("#%06X", (0xFF0000));
 
-        // Bind refresh button
-        eventBuilder.addEventBinding(
+        uiEventBuilder.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#BackButton",
+                new EventData().append("Action", "BackButton"),
+                false);
+
+        // Bind save button
+        uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#SaveButton",
                 new EventData().append("Action", "save"),
@@ -83,50 +89,50 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
         );
 
         // Bind text fields
-        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
                 "#TagNameInput",
                 EventData.of("@TagName", "#TagNameInput.Value"),
                 false);
 
-        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
                 "#TagIdInput",
                 EventData.of("@TagId", "#TagIdInput.Value"),
                 false);
 
 
-        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
                 "#TagColorPicker",
                 EventData.of("@TagColorPicker", "#TagColorPicker.Value"),
                 false);
 
 
         // Bind checkboxes
-        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
                 "#TagBoldCheckBox #CheckBox",
                 new EventData().append("CheckBox", "Bold"),
                 false
         );
 
-        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
                 "#TagItalicCheckBox #CheckBox",
                 new EventData().append("CheckBox", "Italic"),
                 false
         );
 
-        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
                 "#TagMonospaceCheckBox #CheckBox",
                 new EventData().append("CheckBox", "Monospace"),
                 false
         );
 
-        eventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.ValueChanged,
                 "#TagUnderlineCheckBox #CheckBox",
                 new EventData().append("CheckBox", "Underline"),
                 false
         );
 
         // Bind close button
-        eventBuilder.addEventBinding(
+        uiEventBuilder.addEventBinding(
                 CustomUIEventBindingType.Activating,
                 "#CloseButton",
                 new EventData().append("Action", "close"),
@@ -176,12 +182,18 @@ public class CreateNewTagUI extends InteractiveCustomUIPage<CreateNewTagUI.UIEve
 
         if (data.action == null) return;
 
+        var player = store.getComponent(ref, Player.getComponentType());
+        if (player == null) return;
+
         switch (data.action) {
             case "save":
                 createTag();
                 break;
             case "close":
                 this.close();
+                break;
+            case "BackButton":
+                player.getPageManager().openCustomPage(ref, store, new DashboardUI(playerRef, CustomPageLifetime.CanDismiss));
                 break;
 
         }

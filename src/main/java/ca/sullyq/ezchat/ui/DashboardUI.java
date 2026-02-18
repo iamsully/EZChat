@@ -8,6 +8,7 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
@@ -16,19 +17,18 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
 import javax.annotation.Nonnull;
-import java.util.logging.Level;
 
 public class DashboardUI extends InteractiveCustomUIPage<DashboardUI.UIEventData> {
     private final HytaleLogger logger = HytaleLogger.forEnclosingClass();
 
     // Path relative to Common/UI/Custom/
-    public static final String LAYOUT = "ezchat/Dashboard.ui";
-    public static final String TAG_ENTRY_LAYOUT = "ezchat/DashboardEntry.ui";
+    public static final String LAYOUT = "Pages/Dashboard/Dashboard.ui";
+    public static final String TAG_ENTRY_LAYOUT = "Pages/Dashboard/DashboardEntry.ui";
 
     private final PlayerRef playerRef;
 
-    public DashboardUI(@Nonnull PlayerRef playerRef) {
-        super(playerRef, CustomPageLifetime.CanDismiss, UIEventData.CODEC);
+    public DashboardUI(@Nonnull PlayerRef playerRef, @Nonnull CustomPageLifetime lifetime) {
+        super(playerRef, lifetime, UIEventData.CODEC);
         this.playerRef = playerRef;
     }
 
@@ -42,16 +42,34 @@ public class DashboardUI extends InteractiveCustomUIPage<DashboardUI.UIEventData
         // Load base layout
         uiCommandBuilder.append(LAYOUT);
 
-        uiCommandBuilder.appendInline("#TagCards", "Group { LayoutMode: Left; Anchor: (Bottom: 0); }");
+        uiCommandBuilder.appendInline("#DashboardCards", "Group { LayoutMode: Left; Anchor: (Bottom: 0); }");
 
-        uiCommandBuilder.append("#TagCards[0]", TAG_ENTRY_LAYOUT);
-
-        uiCommandBuilder.set("#TagCards[0] #TagName.Text", "Test");
-
+        // Show All Tags
+        uiCommandBuilder.append("#DashboardCards[0]", TAG_ENTRY_LAYOUT);
+        uiCommandBuilder.set("#DashboardCards[0] #DashboardEntry.Text", "Create New Tag");
         uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating,
-                "#TagCards[0] #TheButton",
-                new EventData().append("Button", "TestButton"),
+                "#DashboardCards[0] #TheButton",
+                new EventData().append("Button", "CreateTag"),
                 false);
+
+        // Add Tag Button
+        uiCommandBuilder.appendInline("#DashboardCards", "Group { LayoutMode: Left; Anchor: (Bottom: 0); }");
+        uiCommandBuilder.append("#DashboardCards[1]", TAG_ENTRY_LAYOUT);
+        uiCommandBuilder.set("#DashboardCards[1] #DashboardEntry.Text", "Coming soon...");
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating,
+                "#DashboardCards[1] #TheButton",
+                new EventData().append("Button", "ShowTags"),
+                false);
+
+        // Give tag button
+        uiCommandBuilder.appendInline("#DashboardCards", "Group { LayoutMode: Left; Anchor: (Bottom: 0); }");
+        uiCommandBuilder.append("#DashboardCards[2]", TAG_ENTRY_LAYOUT);
+        uiCommandBuilder.set("#DashboardCards[2] #DashboardEntry.Text", "Coming soon...");
+        uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating,
+                "#DashboardCards[2] #TheButton",
+                new EventData().append("Button", "GiveTag"),
+                false);
+
 
     }
 
@@ -61,16 +79,21 @@ public class DashboardUI extends InteractiveCustomUIPage<DashboardUI.UIEventData
             @Nonnull Store<EntityStore> store,
             @Nonnull UIEventData data
     ) {
-
-        if (data.button.equals("TestButton")) {
-            logger.at(Level.INFO).log("Clicked test");
+        var player = store.getComponent(ref, Player.getComponentType());
+        if (player == null) return;
+        switch (data.button) {
+            case "ShowTags":
+                break;
+            case "CreateTag":
+                player.getPageManager().openCustomPage(ref, store, new CreateNewTagUI(playerRef));
+                break;
+            case "GiveTag":
+                break;
         }
+
         this.sendUpdate();
     }
 
-    /**
-     * Event data class with codec for handling UI events.
-     */
     public static class UIEventData {
         static final String KEY_BUTTON = "Button";
 
